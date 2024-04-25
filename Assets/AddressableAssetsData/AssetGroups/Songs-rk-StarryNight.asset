@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Songs-rk-StarryNight
+  m_EditorClassIdentifier: 
+  m_GroupName: Songs-rk-StarryNight
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 84c1e9025f4b7b3419036dc5862baf39
+  m_SerializeEntries:
+  - m_GUID: 42878a44c52728648b9c8863d67e9fc7
+    m_Address: Assets/Content/Songs/rk - Starry night/rk - Starry night.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-rk
+    - song-starrynight
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29166b1e81f8d314cad4a777cdd3f10a
+    m_Address: Assets/Content/Songs/rk - Starry night/CoverArt.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-rk
+    - song-starrynight
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c2399c7275f36c44fa79835003b4b3e8
+    m_Address: Assets/Content/Songs/rk - Starry night/TestMap.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-rk
+    - song-starrynight
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b83a7ef568cd2ca48a27b34d8302d80b
+    m_Address: Assets/Content/Songs/rk - Starry night/_Metadata - Starry night.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-rk
+    - song-starrynight
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4b4f2b369f814bb409121982c193b3fc, type: 2}
+    - {fileID: 11400000, guid: 1014f77045c87e0428bed63cbe37a4e8, type: 2}
