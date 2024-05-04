@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SongTrack
+    uniqueID: 2617072895
+    locked: 0

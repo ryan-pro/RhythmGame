@@ -9,6 +9,8 @@ namespace RhythmGame
     {
         [SerializeField]
         private RectTransform rectTransform;
+        [SerializeField]
+        private bool moveToSongBeat = true;
 
         private RectTransform startTransform;
         private RectTransform endTransform;
@@ -17,6 +19,8 @@ namespace RhythmGame
 
         private bool isInitialized;
         private CancellationTokenSource movingSource;
+
+        private void Reset() => rectTransform = GetComponent<RectTransform>();
 
         public void InitializeNote(RhythmConductor conductor, RectTransform start, RectTransform end, float startBeat, float targetBeat)
         {
@@ -43,7 +47,12 @@ namespace RhythmGame
 
         private async UniTaskVoid MoveToTarget(RhythmConductor conductor, CancellationToken token)
         {
-            await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.SongBeatPosition).WithCancellation(token))
+            var valueChanged = (moveToSongBeat
+                ? UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.SongBeatPosition)
+                : UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.StageBeatPosition))
+                .WithCancellation(token);
+
+            await foreach (var beatPos in valueChanged)
             {
                 if(beatPos >= targetBeat + 1f)
                 {
@@ -52,7 +61,7 @@ namespace RhythmGame
                 }
 
                 var t = (beatPos - startBeat) / (targetBeat - startBeat);
-                rectTransform.anchoredPosition = Vector2.Lerp(startTransform.anchoredPosition, endTransform.anchoredPosition, t);
+                rectTransform.position = Vector3.LerpUnclamped(startTransform.position, endTransform.position, t);
             }
         }
     }

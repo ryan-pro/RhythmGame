@@ -43,6 +43,9 @@ namespace RhythmGame
             };
 
             notes = loadedNotesMap.NotesList;
+
+            //TODO: Determine how many notes show at most populated point
+            await notePrefabPool.PopulatePool(token);
         }
 
         public void UnloadNotes()
@@ -75,7 +78,7 @@ namespace RhythmGame
                 if (noteData.BeatPosition <= beatPos + beatsBeforeSpawn)
                 {
                     var track = tracks[noteData.TrackIndex];
-                    var note = (await notePrefabPool.GetObject(tracks[noteData.TrackIndex].transform, true)).GetComponent<NoteObject>();
+                    var note = (await notePrefabPool.GetObject(tracks[noteData.TrackIndex].transform, true, stageToken)).GetComponent<NoteObject>();
 
                     note.InitializeNote(conductor, track.Start, track.End, beatPos, (float)noteData.BeatPosition);
 

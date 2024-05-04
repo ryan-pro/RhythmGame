@@ -28,6 +28,9 @@ namespace RhythmGame
         private bool isPaused;
         private float pauseStartTime;
 
+        public bool IsStarted => isStarted;
+        public float SecsPerBeat => secsPerBeat;
+
         public float StageStartTime => stageStartTime;
         public float StageBeatPosition => stageBeatPosition;
 
@@ -57,7 +60,18 @@ namespace RhythmGame
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.W))
-                StartConducting();
+            {
+                if(!isStarted)
+                {
+                    Debug.Log("Conduction started.");
+                    StartConducting();
+                }
+                else
+                {
+                    Debug.Log("Conduction stopped.");
+                    StopConducting();
+                }
+            }
 
             if (!isStarted || isPaused)
                 return;
