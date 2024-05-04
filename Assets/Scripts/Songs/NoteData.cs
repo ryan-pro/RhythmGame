@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RhythmGame.Songs
 {
     [System.Serializable]
-    public struct Note
+    public struct NoteData
     {
         [SerializeField, Min(0)]
         private int trackIndex;

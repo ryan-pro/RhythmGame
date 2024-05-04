@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace RhythmGame.Songs
 {
-    [CustomPropertyDrawer(typeof(Note))]
+    [CustomPropertyDrawer(typeof(NoteData))]
     public class NotePropertyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

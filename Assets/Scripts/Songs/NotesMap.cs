@@ -9,10 +9,10 @@ namespace RhythmGame.Songs
     public class NotesMap : ScriptableObject
     {
         [SerializeField]
-        private Note[] notesList = new Note[0];
+        private NoteData[] notesList = new NoteData[0];
         private bool sorted;
 
-        public Note[] NotesList
+        public NoteData[] NotesList
         {
             get
             {

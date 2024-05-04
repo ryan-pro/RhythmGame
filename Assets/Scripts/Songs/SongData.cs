@@ -1,3 +1,4 @@
+using RhythmGame.Songs;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
