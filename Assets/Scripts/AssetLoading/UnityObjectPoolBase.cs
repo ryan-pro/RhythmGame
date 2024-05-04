@@ -33,12 +33,17 @@ namespace RhythmGame
         protected void Awake()
         {
             if (populateOnAwake)
-                PopulatePool(initialPoolSize);
+            {
+                var lifetimeToken = this.GetCancellationTokenOnDestroy();
+                PopulatePool(initialPoolSize, lifetimeToken);
+            }
         }
 
-        public abstract UniTask PopulatePool(int minimumCount);
+        public virtual UniTask PopulatePool(CancellationToken token) => PopulatePool(initialPoolSize, token);
 
-        public abstract UniTask<GameObject> GetObject(Transform newParent, bool activateObject);
+        public abstract UniTask PopulatePool(int minimumCount, CancellationToken token);
+
+        public abstract UniTask<GameObject> GetObject(Transform newParent, bool activateObject, CancellationToken token);
         public abstract void ReturnObject(GameObject toReturn);
 
         public abstract void ClearPool();

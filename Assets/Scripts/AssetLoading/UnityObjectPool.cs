@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace RhythmGame
@@ -12,7 +13,7 @@ namespace RhythmGame
 
         private readonly List<PooledObject> pool = new();
 
-        public override UniTask PopulatePool(int minimumCount)
+        public override UniTask PopulatePool(int minimumCount, CancellationToken token)
         {
             while (pool.Count < minimumCount)
             {
@@ -24,7 +25,7 @@ namespace RhythmGame
             return UniTask.CompletedTask;
         }
 
-        public override UniTask<GameObject> GetObject(Transform newParent, bool activateObject)
+        public override UniTask<GameObject> GetObject(Transform newParent, bool activateObject, CancellationToken token)
         {
             PooledObject toReturn = pool.Find(a => !a.InUse);
 

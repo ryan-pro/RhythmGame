@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -14,17 +15,15 @@ namespace RhythmGame
         private GameObject loadedAsset;
         private readonly List<PooledObject> pool = new();
 
-        private async UniTask LoadPrefab()
+        private async UniTask LoadPrefab(CancellationToken token)
         {
-            var lifetimeToken = this.GetCancellationTokenOnDestroy();
-
-            loadedAsset = await prefabRef.LoadAssetAsync<GameObject>().WithCancellation(lifetimeToken);
+            loadedAsset = await prefabRef.LoadAssetAsync<GameObject>().WithCancellation(token);
         }
 
-        public override async UniTask PopulatePool(int minimumCount)
+        public override async UniTask PopulatePool(int minimumCount, CancellationToken token)
         {
             if (loadedAsset == null)
-                await LoadPrefab();
+                await LoadPrefab(token);
 
             while (pool.Count < minimumCount)
             {
@@ -34,14 +33,14 @@ namespace RhythmGame
             }
         }
 
-        public override async UniTask<GameObject> GetObject(Transform newParent, bool activateObject)
+        public override async UniTask<GameObject> GetObject(Transform newParent, bool activateObject, CancellationToken token)
         {
             PooledObject toReturn = pool.Find(a => !a.InUse);
 
             if (toReturn == null)
             {
                 if (loadedAsset == null)
-                    await LoadPrefab();
+                    await LoadPrefab(token);
 
                 toReturn = new PooledObject(Instantiate(loadedAsset, poolParent));
                 pool.Add(toReturn);
@@ -87,5 +86,7 @@ namespace RhythmGame
         }
     }
 
-    public class AddressableObjectPool : AddressableObjectPoolT<AssetReferenceGameObject> { }
+    public class AddressableGameObjectPool : AddressableObjectPoolT<AssetReferenceGameObject> { }
+
+    public class AddressableNoteObjectPool : AddressableObjectPoolT<AssetReferenceNoteObject> { }
 }
