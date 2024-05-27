@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Songs-SpikyCandy-HelloWorld
+  m_EditorClassIdentifier: 
+  m_GroupName: Songs-SpikyCandy-HelloWorld
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d90f535d5ca82354eaa2faa1f424e254
+  m_SerializeEntries:
+  - m_GUID: fff3b97de6f7e8b4db787aaa8bda1282
+    m_Address: Spiky Candy - Hello World
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-spikycandy
+    - song-helloworld
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 755bfa51ab4502e4e92bce4b36f91d99
+    m_Address: CoverArt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-spikycandy
+    - song-helloworld
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 231a4522f3ac180419485f26a8accb43
+    m_Address: HelloWorldTestMap
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-spikycandy
+    - song-helloworld
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae5644d45e2d80f42a9afd394ff0950c
+    m_Address: Hello World
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - artist-spikycandy
+    - song-helloworld
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ceb445346d3f69349b26ab1a022402e2, type: 2}
+    - {fileID: 11400000, guid: 2f179df9d471c9141bc95a9b0a3d9032, type: 2}

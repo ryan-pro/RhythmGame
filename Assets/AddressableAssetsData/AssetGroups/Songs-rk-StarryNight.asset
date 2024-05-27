@@ -18,28 +18,28 @@ MonoBehaviour:
   m_GUID: 84c1e9025f4b7b3419036dc5862baf39
   m_SerializeEntries:
   - m_GUID: 42878a44c52728648b9c8863d67e9fc7
-    m_Address: Assets/Content/Songs/rk - Starry night/rk - Starry night.mp3
+    m_Address: rk - Starry night
     m_ReadOnly: 0
     m_SerializedLabels:
     - artist-rk
     - song-starrynight
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 29166b1e81f8d314cad4a777cdd3f10a
-    m_Address: Assets/Content/Songs/rk - Starry night/CoverArt.jpg
+    m_Address: CoverArt
     m_ReadOnly: 0
     m_SerializedLabels:
     - artist-rk
     - song-starrynight
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c2399c7275f36c44fa79835003b4b3e8
-    m_Address: Assets/Content/Songs/rk - Starry night/TestMap.asset
+    m_Address: TestMap
     m_ReadOnly: 0
     m_SerializedLabels:
     - artist-rk
     - song-starrynight
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b83a7ef568cd2ca48a27b34d8302d80b
-    m_Address: Assets/Content/Songs/rk - Starry night/_Metadata - Starry night.asset
+    m_Address: Starry night
     m_ReadOnly: 0
     m_SerializedLabels:
     - artist-rk
