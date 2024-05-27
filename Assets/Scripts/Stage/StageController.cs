@@ -15,23 +15,45 @@ namespace RhythmGame
         private TrackPlayer trackPlayer;
 
         [SerializeField]
-        private int beatsBeforeStart = 4;
+        private TrackBarView barView;
+
+        [Header("Debug")]
+        [SerializeField]
+        private SongData debugSong;
+        [SerializeField]
+        private SongOptions debugOptions = new();
 
         private CancellationTokenSource stageSource;
 
+        public SongData DebugSong => !Application.isEditor ? null : debugSong;
+        public SongOptions DebugOptions => !Application.isEditor ? null : debugOptions;
+
+        public void DebugStartStage() => InitializeSong(debugSong, debugOptions).Forget();
+
         public async UniTask InitializeSong(SongData data, SongOptions options)
         {
-            var startOffset = data.StartOffset + options.CustomOffset;
-            conductor.StartConducting(data.BPM, startOffset);
+            InitializeComponents(data, options);
 
             stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
-            var clipLoad = songPlayer.LoadClip(data, stageSource.Token);
-            var notesLoad = trackPlayer.LoadNotes(data, options.Difficulty, stageSource.Token);
-            await UniTask.WhenAll(clipLoad, notesLoad);
+            await LoadSongData(data, options, stageSource.Token);
 
             //TODO: Finish view presentation
 
-            conductor.ScheduleSongStart(beatsBeforeStart);
+            conductor.ScheduleSongStart();
+        }
+
+        public void InitializeComponents(SongData data, SongOptions options)
+        {
+            var startOffset = data.StartOffset + options.CustomOffset;
+            conductor.StartConducting(data.BPM, data.BeatsPerBar, startOffset);
+            barView.Initialize(data.BeatsPerBar, trackPlayer.BeatsBeforeNoteSpawn);
+        }
+
+        private UniTask LoadSongData(SongData data, SongOptions options, CancellationToken token)
+        {
+            var clipLoad = songPlayer.LoadClip(data, token);
+            var notesLoad = trackPlayer.LoadNotes(data, options.Difficulty, token);
+            return UniTask.WhenAll(clipLoad, notesLoad);
         }
 
         public void EndStage()

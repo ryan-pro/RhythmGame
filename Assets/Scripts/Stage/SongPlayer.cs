@@ -35,6 +35,7 @@ namespace RhythmGame
         public void ScheduleSongStart(float dspTime)
         {
             songSource.PlayScheduled(dspTime);
+            Debug.Log($"Scheduled song start in {AudioSettings.dspTime - dspTime:N2} seconds!");
         }
 
         public void StartPause() => songSource.Pause();

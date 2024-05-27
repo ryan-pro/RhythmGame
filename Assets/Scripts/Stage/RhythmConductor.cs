@@ -12,6 +12,8 @@ namespace RhythmGame
         [SerializeField]
         private float bpm = 60f;
         [SerializeField]
+        private int beatsPerBar = 4;
+        [SerializeField]
         private float songStartOffset;
 
         private float secsPerBeat;
@@ -37,13 +39,15 @@ namespace RhythmGame
         public float SongStartTime => songStartTime;
         public float SongBeatPosition => songBeatPosition;
 
-        public void StartConducting(float bpm, float offset)
+        public void StartConducting(float bpm, int beatsPerBar, float offset)
         {
             if (isStarted)
                 return;
 
             this.bpm = bpm;
+            this.beatsPerBar = beatsPerBar;
             songStartOffset = offset;
+
             StartConducting();
         }
 
@@ -89,15 +93,22 @@ namespace RhythmGame
 
         public void StopConducting() => isStarted = false;
 
-        public void ScheduleSongStart(int beatsUntilStart)
+        public void ScheduleSongStart()
         {
             if (!isStarted)
                 StartConducting();
 
-            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
-            var beatsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBeat);
+            //var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
+            //var beatsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBeat);
 
-            songStartTime = stageStartTime + ((beatsSinceStart + beatsUntilStart + 1) * secsPerBeat);
+            //songStartTime = stageStartTime + ((beatsSinceStart + (beatsPerBar * 2) + 1) * secsPerBeat);
+
+            var secsPerBar = beatsPerBar * secsPerBeat;
+
+            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
+            var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
+
+            songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
 
             song.ScheduleSongStart(songStartTime);
             track.ScheduleSongStart(this);

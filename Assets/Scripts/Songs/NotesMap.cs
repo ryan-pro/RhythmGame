@@ -27,7 +27,5 @@ namespace RhythmGame.Songs
         }
 
         public void SortListByPosition() => notesList = notesList.OrderBy(a => a.BeatPosition).ToArray();
-
-        public int myInt;
     }
 }

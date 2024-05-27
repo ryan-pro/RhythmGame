@@ -17,17 +17,31 @@ namespace RhythmGame
         [SerializeField]
         private RhythmConductor conductor;
 
-        [Header("Configuration")]
+        private CancellationTokenSource tokenSource;
+
+        [Header("Debug")]
         [SerializeField]
-        private int trackBeatLength = 3;
+        private bool debugMode;
+        [SerializeField]
+        private int debugBeatsPerBar = 4;
+        [SerializeField]
+        private int debugBeatsBeforeSpawn = 3;
 
         private void Awake()
         {
-            var lifetimeToken = this.GetCancellationTokenOnDestroy();
-            Initialize(lifetimeToken).Forget();
+            if (debugMode)
+                Initialize(debugBeatsPerBar, debugBeatsBeforeSpawn);
         }
 
-        private async UniTaskVoid Initialize(CancellationToken token)
+        public void Initialize(int beatsPerBar, int beatsBeforeSpawn)
+        {
+            tokenSource?.Cancel();
+            tokenSource = new CancellationTokenSource();
+
+            InitializeInternal(beatsPerBar, beatsBeforeSpawn, tokenSource.Token).Forget();
+        }
+
+        private async UniTaskVoid InitializeInternal(int beatsPerBar, int beatsBeforeSpawn, CancellationToken token)
         {
             await barPrefabPool.PopulatePool(token);
 
@@ -37,14 +51,17 @@ namespace RhythmGame
 
             await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, c => c.StageBeatPosition).WithCancellation(token))
             {
-                if ((int)beatPos > lastBeat)
+                var intPos = (int)beatPos;
+                if (intPos > lastBeat)
                 {
-                    lastBeat = (int)beatPos;
+                    lastBeat = intPos;
 
-                    var bar = (await barPrefabPool.GetObject(barTrack.transform, true, token)).GetComponent<NoteObject>();
-                    bar.InitializeNote(conductor, barTrack.Start, barTrack.End, lastBeat, lastBeat + trackBeatLength);
+                    if ((intPos + beatsBeforeSpawn) % beatsPerBar == 0)
+                        barTrack.AddNote(lastBeat, lastBeat + beatsBeforeSpawn, token);
                 }
             }
         }
+
+        private void OnDestroy() => tokenSource?.Cancel();
     }
 }

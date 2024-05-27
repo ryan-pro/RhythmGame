@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using RhythmGame.Songs;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -20,7 +22,9 @@ namespace RhythmGame
         [SerializeField, Space]
         private int bpm;
         [SerializeField]
-        private int startOffset;
+        private int beatsPerBar;
+        [SerializeField]
+        private float startOffset;
 
         [SerializeField, Space]
         private AssetReferenceNotesMap easyNoteTrack;
@@ -36,10 +40,21 @@ namespace RhythmGame
         public AssetReferenceSprite AlbumArt => albumArt;
 
         public int BPM => bpm;
-        public int StartOffset => startOffset;
+        public int BeatsPerBar => beatsPerBar;
+        public float StartOffset => startOffset;
 
         public AssetReferenceNotesMap EasyNoteTrack => easyNoteTrack;
         public AssetReferenceNotesMap MediumNoteTrack => mediumNoteTrack;
         public AssetReferenceNotesMap HardNoteTrack => hardNoteTrack;
+
+        public async UniTask<NotesMap> LoadNoteMapByDifficulty(SongDifficulty difficulty, CancellationToken token)
+        {
+            return difficulty switch
+            {
+                SongDifficulty.Hard => await hardNoteTrack.LoadAssetAsync().WithCancellation(token),
+                SongDifficulty.Medium => await mediumNoteTrack.LoadAssetAsync().WithCancellation(token),
+                _ => await easyNoteTrack.LoadAssetAsync().WithCancellation(token)
+            };
+        }
     }
 }

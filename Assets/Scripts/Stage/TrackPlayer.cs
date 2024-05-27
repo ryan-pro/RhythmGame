@@ -1,10 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using RhythmGame.Songs;
-using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 
 namespace RhythmGame
 {
@@ -20,12 +20,24 @@ namespace RhythmGame
 
         [Header("Configuration")]
         [SerializeField]
-        private int beatsBeforeSpawn = 3;
+        private int beatsBeforeNoteSpawn = 3;
+        [SerializeField]
+        private float greatThreshold = 0.1f;
+        [SerializeField]
+        private float okayThreshold = 0.2f;
 
         private NotesMap loadedNotesMap;
         private NoteData[] notes = new NoteData[0];
 
         CancellationToken stageToken;
+
+        public int BeatsBeforeNoteSpawn => beatsBeforeNoteSpawn;
+
+        private void Awake()
+        {
+            foreach (var track in tracks)
+                track.SetScoreThresholds(greatThreshold, okayThreshold);
+        }
 
         public async UniTask LoadNotes(SongData songData, SongDifficulty difficulty, CancellationToken token)
         {
@@ -34,14 +46,7 @@ namespace RhythmGame
             if (loadedNotesMap != null)
                 Addressables.Release(loadedNotesMap);
 
-            //TODO: Move to SongData?
-            loadedNotesMap = difficulty switch
-            {
-                SongDifficulty.Hard => await songData.HardNoteTrack.LoadAssetAsync().WithCancellation(token),
-                SongDifficulty.Medium => await songData.MediumNoteTrack.LoadAssetAsync().WithCancellation(token),
-                _ => await songData.EasyNoteTrack.LoadAssetAsync().WithCancellation(token)
-            };
-
+            loadedNotesMap = await songData.LoadNoteMapByDifficulty(difficulty, token);
             notes = loadedNotesMap.NotesList;
 
             //TODO: Determine how many notes show at most populated point
@@ -50,7 +55,7 @@ namespace RhythmGame
 
         public void UnloadNotes()
         {
-            notes = Array.Empty<NoteData>();
+            notes = System.Array.Empty<NoteData>();
 
             if (loadedNotesMap != null)
                 Addressables.Release(loadedNotesMap);
@@ -63,8 +68,7 @@ namespace RhythmGame
 
         private async UniTaskVoid UpdateNotes(RhythmConductor conductor)
         {
-            while (conductor.SongStartTime < 1f)
-                await UniTask.Yield(stageToken);
+            await UniTask.WaitUntil(() => conductor.SongStartTime > 1f);
 
             int noteIndex = 0;
 
@@ -73,15 +77,15 @@ namespace RhythmGame
                 if (noteIndex >= notes.Length)
                     break;
 
-                var noteData = notes[noteIndex];
+                var note = notes[noteIndex];
 
-                if (noteData.BeatPosition <= beatPos + beatsBeforeSpawn)
+                if (beatPos >= note.BeatPosition - beatsBeforeNoteSpawn)
                 {
-                    var track = tracks[noteData.TrackIndex];
-                    var note = (await notePrefabPool.GetObject(tracks[noteData.TrackIndex].transform, true, stageToken)).GetComponent<NoteObject>();
+                    var track = tracks[note.TrackIndex];
+                    var floatPosition = (float)note.BeatPosition;
+                    var startPosition = floatPosition - beatsBeforeNoteSpawn;
 
-                    note.InitializeNote(conductor, track.Start, track.End, beatPos, (float)noteData.BeatPosition);
-
+                    track.AddNote(startPosition, floatPosition, stageToken);
                     noteIndex++;
                 }
             }

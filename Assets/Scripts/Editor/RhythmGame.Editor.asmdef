@@ -2,7 +2,8 @@
     "name": "RhythmGame.Editor",
     "rootNamespace": "RhythmGameEditor",
     "references": [
-        "GUID:ed69807076396224fa2deebb5b6954c2"
+        "GUID:ed69807076396224fa2deebb5b6954c2",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [
         "Editor"

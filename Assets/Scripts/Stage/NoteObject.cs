@@ -5,24 +5,25 @@ using UnityEngine;
 
 namespace RhythmGame
 {
-    public class NoteObject : MonoBehaviour
+    public class NoteObject : PooledObject
     {
         [SerializeField]
-        private RectTransform rectTransform;
-        [SerializeField]
         private bool moveToSongBeat = true;
+        [SerializeField]
+        private bool logHitsToConsole;
 
-        private RectTransform startTransform;
-        private RectTransform endTransform;
+        private Transform startTransform;
+        private Transform endTransform;
         private float startBeat;
         private float targetBeat;
 
         private bool isInitialized;
         private CancellationTokenSource movingSource;
 
-        private void Reset() => rectTransform = GetComponent<RectTransform>();
+        public float StartBeat => startBeat;
+        public float TargetBeat => targetBeat;
 
-        public void InitializeNote(RhythmConductor conductor, RectTransform start, RectTransform end, float startBeat, float targetBeat)
+        public void InitializeNote(RhythmConductor conductor, Transform start, Transform end, float startBeat, float targetBeat)
         {
             if (isInitialized)
                 return;
@@ -39,10 +40,27 @@ namespace RhythmGame
             MoveToTarget(conductor, movingSource.Token).Forget();
         }
 
-        private void OnDisable()
+        public void SetNoteHitRating(NoteHitRating rating)
         {
-            movingSource?.Cancel();
-            isInitialized = false;
+            //TODO: Flesh out this method
+
+            if (logHitsToConsole)
+            {
+                switch (rating)
+                {
+                    case NoteHitRating.Great:
+                        Debug.Log("GREAT HIT!");
+                        break;
+                    case NoteHitRating.Okay:
+                        Debug.Log("OKAY HIT!");
+                        break;
+                    case NoteHitRating.Miss:
+                        Debug.Log("MISS!");
+                        break;
+                }
+            }
+
+            ReturnToPool();
         }
 
         private async UniTaskVoid MoveToTarget(RhythmConductor conductor, CancellationToken token)
@@ -52,17 +70,25 @@ namespace RhythmGame
                 : UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.StageBeatPosition))
                 .WithCancellation(token);
 
+            var cachedTransform = transform;
+
             await foreach (var beatPos in valueChanged)
             {
-                if(beatPos >= targetBeat + 1f)
+                if (beatPos >= targetBeat + 1f)
                 {
-                    //Handle miss and trigger return to pool
+                    SetNoteHitRating(NoteHitRating.Miss);
                     break;
                 }
 
                 var t = (beatPos - startBeat) / (targetBeat - startBeat);
-                rectTransform.position = Vector3.LerpUnclamped(startTransform.position, endTransform.position, t);
+                cachedTransform.position = Vector3.LerpUnclamped(startTransform.position, endTransform.position, t);
             }
+        }
+
+        private void OnDisable()
+        {
+            movingSource?.Cancel();
+            isInitialized = false;
         }
     }
 }
