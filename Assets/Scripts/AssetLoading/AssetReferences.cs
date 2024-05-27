@@ -42,4 +42,17 @@ namespace RhythmGame
         /// <param name="guid">The object guid.</param>
         public AssetReferenceNoteObject(string guid) : base(guid) { }
     }
+
+    /// <summary>
+    /// PooledObject only asset reference.
+    /// </summary>
+    [System.Serializable]
+    public class AssetReferencePooledObject : AssetReferenceT<PooledObject>
+    {
+        /// <summary>
+        /// Constructs a new reference to a PooledObject.
+        /// </summary>
+        /// <param name="guid">The object guid.</param>
+        public AssetReferencePooledObject(string guid) : base(guid) { }
+    }
 }

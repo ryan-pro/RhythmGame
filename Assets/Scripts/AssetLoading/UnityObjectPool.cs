@@ -9,17 +9,20 @@ namespace RhythmGame
     {
         [Header("Pool Settings")]
         [SerializeField]
-        private GameObject objectPrefab;
+        private PooledObject objectPrefab;
 
-        private readonly List<PooledObject> pool = new();
+        private readonly Queue<PooledObject> availableObjects = new();
+        private readonly HashSet<PooledObject> allObjects = new();
 
         public override UniTask PopulatePool(int minimumCount, CancellationToken token)
         {
-            while (pool.Count < minimumCount)
+            while (allObjects.Count < minimumCount)
             {
                 var newObject = Instantiate(objectPrefab, poolParent);
-                newObject.SetActive(false);
-                pool.Add(new PooledObject(newObject));
+                newObject.InitPooledObject(this);
+
+                allObjects.Add(newObject);
+                availableObjects.Enqueue(newObject);
             }
 
             return UniTask.CompletedTask;
@@ -27,45 +30,41 @@ namespace RhythmGame
 
         public override UniTask<GameObject> GetObject(Transform newParent, bool activateObject, CancellationToken token)
         {
-            PooledObject toReturn = pool.Find(a => !a.InUse);
-
-            if (toReturn == null)
+            if (!availableObjects.TryDequeue(out var toReturn))
             {
-                toReturn = new PooledObject(Instantiate(objectPrefab, poolParent));
-                pool.Add(toReturn);
+                toReturn = Instantiate(objectPrefab, poolParent);
+                toReturn.InitPooledObject(this);
+                allObjects.Add(toReturn);
             }
 
-            toReturn.InUse = true;
-            toReturn.Object.SetActive(activateObject);
-            toReturn.Object.transform.SetParent(newParent, false);
+            toReturn.gameObject.SetActive(activateObject);
+            toReturn.transform.SetParent(newParent, false);
 
-            return UniTask.FromResult(toReturn.Object);
+            return UniTask.FromResult(toReturn.gameObject);
         }
 
-        public override void ReturnObject(GameObject toReturn)
+        public override void ReturnObject(PooledObject toReturn)
         {
-            var pooledObject = pool.Find(a => a.Object == toReturn);
-
-            if (pooledObject == null)
+            if (!allObjects.Contains(toReturn))
             {
                 Debug.LogError($"Object {toReturn.name} not found in pool");
                 return;
             }
 
-            pooledObject.Object.SetActive(false);
-            pooledObject.Object.transform.SetParent(poolParent);
-            pooledObject.Object.transform.localPosition = Vector3.zero;
+            toReturn.gameObject.SetActive(false);
+            toReturn.transform.SetParent(poolParent, false);
+            toReturn.transform.localPosition = Vector3.zero;
 
-            pooledObject.InUse = false;
+            availableObjects.Enqueue(toReturn);
         }
 
         public override void ClearPool()
         {
-            for (int i = pool.Count - 1; i >= 0; i--)
-            {
-                Destroy(pool[i].Object);
-                pool.RemoveAt(i);
-            }
+            foreach (var obj in allObjects)
+                Destroy(obj.gameObject);
+
+            availableObjects.Clear();
+            allObjects.Clear();
         }
     }
 }

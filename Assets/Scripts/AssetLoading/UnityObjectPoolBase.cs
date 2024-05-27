@@ -4,18 +4,6 @@ using UnityEngine;
 
 namespace RhythmGame
 {
-    public class PooledObject
-    {
-        public GameObject Object { get; }
-        public bool InUse { get; set; }
-
-        public PooledObject(GameObject obj)
-        {
-            Object = obj;
-            InUse = false;
-        }
-    }
-
     [RequireComponent(typeof(Transform))]
     public abstract class UnityObjectPoolBase : MonoBehaviour
     {
@@ -44,7 +32,7 @@ namespace RhythmGame
         public abstract UniTask PopulatePool(int minimumCount, CancellationToken token);
 
         public abstract UniTask<GameObject> GetObject(Transform newParent, bool activateObject, CancellationToken token);
-        public abstract void ReturnObject(GameObject toReturn);
+        public abstract void ReturnObject(PooledObject toReturn);
 
         public abstract void ClearPool();
     }
