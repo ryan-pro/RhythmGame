@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1781007211}
   - component: {fileID: 1781007210}
+  - component: {fileID: 1781007212}
   m_Layer: 0
   m_Name: InitObject
   m_TagString: Untagged
@@ -152,6 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 801a6557418865645a584e7cc56fcf64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundScenes: []
+  postInitializationScene:
+    sceneReference:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  splashPlayer: {fileID: 1781007212}
 --- !u!4 &1781007211
 Transform:
   m_ObjectHideFlags: 0
@@ -167,6 +175,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1781007212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781007209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb4413bbaea624a438f90ba21f7732d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splashStopBehavior: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

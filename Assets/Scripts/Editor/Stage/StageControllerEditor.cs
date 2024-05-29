@@ -1,9 +1,8 @@
 using Cysharp.Threading.Tasks;
-using RhythmGame;
 using UnityEditor;
 using UnityEngine;
 
-namespace RhythmGameEditor
+namespace RhythmGame
 {
     [CustomEditor(typeof(StageController))]
     public class StageControllerEditor : Editor
