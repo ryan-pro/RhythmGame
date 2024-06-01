@@ -756,6 +756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 334996623}
   - component: {fileID: 334996622}
+  - component: {fileID: 334996624}
   m_Layer: 0
   m_Name: StageController
   m_TagString: Untagged
@@ -775,10 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611e4714a1f3934469ac33555779783e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conductor: {fileID: 1980449468}
-  songPlayer: {fileID: 2083648116}
-  trackPlayer: {fileID: 1791935031}
-  barView: {fileID: 2063483887}
+  gameplayCoord: {fileID: 334996624}
   debugSong: {fileID: 11400000, guid: ae5644d45e2d80f42a9afd394ff0950c, type: 2}
   debugOptions:
     Difficulty: 0
@@ -802,6 +800,25 @@ Transform:
   - {fileID: 2063483885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &334996624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334996621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b326fb51456cb4b9ce45f81906c290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  conductor: {fileID: 1980449468}
+  songPlayer: {fileID: 2083648116}
+  trackPlayer: {fileID: 1791935031}
+  barView: {fileID: 2063483887}
+  beatsBeforeNoteSpawn: 6
+  greatHitThreshold: 0.2
+  okayHitThreshold: 0.38
 --- !u!1 &417656889
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,9 +2471,6 @@ MonoBehaviour:
   - {fileID: 25860769}
   - {fileID: 1117732050}
   - {fileID: 52430952}
-  beatsBeforeNoteSpawn: 6
-  greatThreshold: 0.2
-  okayThreshold: 0.38
 --- !u!114 &1791935032
 MonoBehaviour:
   m_ObjectHideFlags: 0
