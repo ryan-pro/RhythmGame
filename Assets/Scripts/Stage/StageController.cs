@@ -8,14 +8,7 @@ namespace RhythmGame
     public class StageController : MonoBehaviour
     {
         [SerializeField]
-        private RhythmConductor conductor;
-        [SerializeField]
-        private SongPlayer songPlayer;
-        [SerializeField]
-        private TrackPlayer trackPlayer;
-
-        [SerializeField]
-        private TrackBarView barView;
+        private GameplayCoordinator gameplayCoord;
 
         [Header("Debug")]
         [SerializeField]
@@ -32,28 +25,13 @@ namespace RhythmGame
 
         public async UniTask InitializeSong(SongData data, SongOptions options)
         {
-            InitializeComponents(data, options);
-
             stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
-            await LoadSongData(data, options, stageSource.Token);
+            var initTask = gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
 
             //TODO: Finish view presentation
 
-            conductor.ScheduleSongStart();
-        }
-
-        public void InitializeComponents(SongData data, SongOptions options)
-        {
-            var startOffset = data.StartOffset + options.CustomOffset;
-            conductor.StartConducting(data.BPM, data.BeatsPerBar, startOffset);
-            barView.Initialize(data.BeatsPerBar, trackPlayer.BeatsBeforeNoteSpawn);
-        }
-
-        private UniTask LoadSongData(SongData data, SongOptions options, CancellationToken token)
-        {
-            var clipLoad = songPlayer.LoadClip(data, token);
-            var notesLoad = trackPlayer.LoadNotes(data, options.Difficulty, token);
-            return UniTask.WhenAll(clipLoad, notesLoad);
+            await initTask;
+            gameplayCoord.ScheduleSong();
         }
 
         public void EndStage()
@@ -65,7 +43,7 @@ namespace RhythmGame
         private void CleanUp()
         {
             stageSource?.Cancel();
-            conductor.StopConducting();
+            gameplayCoord.EndGameplay();
         }
 
         private void OnDisable() => CleanUp();

@@ -1,40 +1,31 @@
 ﻿using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
 using RhythmGame.Songs;
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Serialization;
 
 namespace RhythmGame
 {
     public class TrackPlayer : MonoBehaviour
     {
-        [Header("External References")]
         [SerializeField]
         private UnityObjectPoolBase notePrefabPool;
-
-        [Header("Scene References")]
         [SerializeField]
         private Track[] tracks;
 
-        [Header("Configuration")]
-        [SerializeField]
-        private int beatsBeforeNoteSpawn = 3;
-        [SerializeField]
-        private float greatThreshold = 0.1f;
-        [SerializeField]
-        private float okayThreshold = 0.2f;
+        private int beatsBeforeNoteSpawn;
 
         private NotesMap loadedNotesMap;
         private NoteData[] notes = new NoteData[0];
 
         CancellationToken stageToken;
 
-        public int BeatsBeforeNoteSpawn => beatsBeforeNoteSpawn;
-
-        private void Awake()
+        public void Initialize(int beatsBeforeNoteSpawn, float greatThreshold, float okayThreshold)
         {
+            this.beatsBeforeNoteSpawn = beatsBeforeNoteSpawn;
+
             foreach (var track in tracks)
                 track.SetScoreThresholds(greatThreshold, okayThreshold);
         }
@@ -55,13 +46,13 @@ namespace RhythmGame
 
         public void UnloadNotes()
         {
-            notes = System.Array.Empty<NoteData>();
+            Array.Clear(notes, 0, notes.Length);
 
             if (loadedNotesMap != null)
                 Addressables.Release(loadedNotesMap);
         }
 
-        public void ScheduleSongStart(RhythmConductor conductor)
+        public void ScheduleSong(RhythmConductor conductor)
         {
             UpdateNotes(conductor).Forget();
         }

@@ -31,7 +31,9 @@ namespace RhythmGame
         private float pauseStartTime;
 
         public bool IsStarted => isStarted;
+
         public float SecsPerBeat => secsPerBeat;
+        public int BeatsPerBar => beatsPerBar;
 
         public float StageStartTime => stageStartTime;
         public float StageBeatPosition => stageBeatPosition;
@@ -61,22 +63,24 @@ namespace RhythmGame
             stageStartTime = (float)AudioSettings.dspTime;
         }
 
+        public void StopConducting() => isStarted = false;
+
+        public float ScheduleNewSongStart()
+        {
+            if (!isStarted)
+                StartConducting();
+
+            var secsPerBar = beatsPerBar * secsPerBeat;
+
+            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
+            var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
+
+            songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
+            return songStartTime;
+        }
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                if(!isStarted)
-                {
-                    Debug.Log("Conduction started.");
-                    StartConducting();
-                }
-                else
-                {
-                    Debug.Log("Conduction stopped.");
-                    StopConducting();
-                }
-            }
-
             if (!isStarted || isPaused)
                 return;
 
@@ -91,55 +95,29 @@ namespace RhythmGame
             songBeatPosition = songPosition / secsPerBeat;
         }
 
-        public void StopConducting() => isStarted = false;
-
-        public void ScheduleSongStart()
-        {
-            if (!isStarted)
-                StartConducting();
-
-            //var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
-            //var beatsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBeat);
-
-            //songStartTime = stageStartTime + ((beatsSinceStart + (beatsPerBar * 2) + 1) * secsPerBeat);
-
-            var secsPerBar = beatsPerBar * secsPerBeat;
-
-            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
-            var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
-
-            songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
-
-            song.ScheduleSongStart(songStartTime);
-            track.ScheduleSongStart(this);
-        }
-
-        public void StartPause()
+        public bool StartPause()
         {
             if(isPaused)
-                return;
+                return false;
 
             isPaused = true;
-
-            song.StartPause();
-            track.StartPause();
             pauseStartTime = (float)AudioSettings.dspTime;
+
+            return true;
         }
 
-        public void EndPause()
+        public bool EndPause()
         {
             if(!isPaused)
-                return;
+                return false;
 
             isPaused = false;
-            var pauseOffset = (float)AudioSettings.dspTime - pauseStartTime;
-            //TODO: Add countdown feature
 
+            var pauseOffset = (float)AudioSettings.dspTime - pauseStartTime;
             stageStartTime += pauseOffset;
             songStartTime += pauseOffset;
 
-            song.EndPause();
-            track.EndPause();
+            return true;
         }
     }
 }
