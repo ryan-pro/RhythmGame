@@ -2,6 +2,7 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
@@ -11,24 +12,24 @@ namespace RhythmGame
         [SerializeField]
         private AudioSource songSource;
 
-        private AudioClip loadedClip;
+        private AsyncOperationHandle<AudioClip> loadedClip;
 
         private void Reset() => songSource = GetComponent<AudioSource>();
 
         public async UniTask LoadClip(SongData songData, CancellationToken token)
         {
-            if(loadedClip != null)
+            if(loadedClip.IsValid())
                 Addressables.Release(loadedClip);
 
-            loadedClip = await songData.AudioClip.LoadAssetAsync().WithCancellation(token);
-            songSource.clip = loadedClip;
+            loadedClip = songData.AudioClip.LoadAssetAsync();
+            songSource.clip = await loadedClip.WithCancellation(token);
         }
 
         public void UnloadClip()
         {
             songSource.clip = null;
 
-            if (loadedClip != null)
+            if (loadedClip.IsValid() && Application.isPlaying)
                 Addressables.Release(loadedClip);
         }
 

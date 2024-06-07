@@ -9,6 +9,8 @@ namespace RhythmGame.Initialization
         [SerializeField]
         private SplashScreen.StopBehavior splashStopBehavior = SplashScreen.StopBehavior.FadeOut;
 
+        private bool stopTriggered;
+
         public async UniTask PlaySplashScreen()
         {
             if (!SplashScreen.isFinished)
@@ -17,6 +19,7 @@ namespace RhythmGame.Initialization
                 return;
             }
 
+            Debug.Log("Splash screen beginning.");
             SplashScreen.Begin();
 
             while(!SplashScreen.isFinished)
@@ -30,6 +33,11 @@ namespace RhythmGame.Initialization
 
         public void StopSplashScreen()
         {
+            if(stopTriggered)
+                return;
+
+            stopTriggered = true;
+
             Debug.Log("Stopping splash screen.");
             SplashScreen.Stop(splashStopBehavior);
         }

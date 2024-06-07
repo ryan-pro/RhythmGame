@@ -2,9 +2,11 @@
 using Cysharp.Threading.Tasks.Linq;
 using RhythmGame.Songs;
 using System;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
@@ -17,7 +19,7 @@ namespace RhythmGame
 
         private int beatsBeforeNoteSpawn;
 
-        private NotesMap loadedNotesMap;
+        private AsyncOperationHandle<NotesMap> loadedNotesMap;
         private NoteData[] notes = new NoteData[0];
 
         CancellationToken stageToken;
@@ -34,11 +36,11 @@ namespace RhythmGame
         {
             stageToken = token;
 
-            if (loadedNotesMap != null)
+            if (loadedNotesMap.IsValid())
                 Addressables.Release(loadedNotesMap);
 
-            loadedNotesMap = await songData.LoadNoteMapByDifficulty(difficulty, token);
-            notes = loadedNotesMap.NotesList;
+            loadedNotesMap = songData.LoadNoteMapByDifficulty(difficulty, token);
+            notes = (await loadedNotesMap.WithCancellation(token)).NotesList.ToArray();
 
             //TODO: Determine how many notes show at most populated point
             await notePrefabPool.PopulatePool(token);
@@ -48,7 +50,7 @@ namespace RhythmGame
         {
             Array.Clear(notes, 0, notes.Length);
 
-            if (loadedNotesMap != null)
+            if (loadedNotesMap.IsValid())
                 Addressables.Release(loadedNotesMap);
         }
 

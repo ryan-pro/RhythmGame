@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Content
+  m_EditorClassIdentifier: 
+  m_GroupName: Content
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7a0c0042d726db8468742bfec25d4ada
+  m_SerializeEntries:
+  - m_GUID: ec46e7699d1fd8449bfb704133baefd2
+    m_Address: A Good Boi - Dreams and Visions
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56b932dcdebb7b94d8d1e6dd3d15c39f
+    m_Address: Dreams and Visions
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 245ba837a4c7f1b40bbd826fd8636a52, type: 2}
+    - {fileID: 11400000, guid: a7bdf9d9e9651034ba2f70e0c1c19c51, type: 2}

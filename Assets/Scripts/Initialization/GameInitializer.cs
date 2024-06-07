@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 
 namespace RhythmGame.Initialization
 {
@@ -33,6 +34,17 @@ namespace RhythmGame.Initialization
             await splashTask;
 
             await loadedScene.ActivateAsync().WithCancellation(token);
+            var controller = loadedScene.Scene.FindInSceneRoot<BaseSceneController>();
+
+            if (controller == null)
+            {
+                Debug.LogError("No controller found in post-initialization scene");
+                return;
+            }
+
+            await controller.InitializeScene();
+            controller.StartScene().Forget();
+            SceneManager.UnloadSceneAsync(gameObject.scene).ToUniTask().Forget();
         }
     }
 }

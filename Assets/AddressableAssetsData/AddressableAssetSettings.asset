@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: a84ff6bc11cf34f40b79a0e688411d2c
   m_currentHash:
     serializedVersion: 2
-    Hash: a0564ee394eb4e68515576501f560148
+    Hash: d2483bcb35d1efb5c010b6cc6994bc41
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -48,6 +48,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cc09d53baf177694bb390ab37bf7584d, type: 2}
   - {fileID: 11400000, guid: 034190ac4d535324784e177ecdd1e033, type: 2}
   - {fileID: 11400000, guid: 99619157886176b4480025d73f419881, type: 2}
+  - {fileID: 11400000, guid: 7f8e196f2e8226944b368d6de1447ab6, type: 2}
+  - {fileID: 11400000, guid: 42bc11b0ad8765b42970cb9f97f44617, type: 2}
+  - {fileID: 11400000, guid: b7b8b495173116941908f7e939ced5fc, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -89,6 +92,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - scene
     - artist-rk
     - artist-spikycandy
     - song-helloworld

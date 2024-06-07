@@ -91,7 +91,7 @@ namespace RhythmGame
             //Judge score based on distance from target beat
             var distance = Mathf.Abs(closestNote.TargetBeat - curBeat);
 
-            if (distance > conductor.SecsPerBeat)
+            if (distance > conductor.SecondsPerBeat)
                 return;
 
             if (distance <= greatThreshold)

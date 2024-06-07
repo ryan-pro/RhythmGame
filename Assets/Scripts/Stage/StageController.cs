@@ -5,8 +5,9 @@ using UnityEngine;
 
 namespace RhythmGame
 {
-    public class StageController : MonoBehaviour
+    public class StageController : BaseSceneController
     {
+        [Header("Scene References")]
         [SerializeField]
         private GameplayCoordinator gameplayCoord;
 
@@ -21,17 +22,26 @@ namespace RhythmGame
         public SongData DebugSong => !Application.isEditor ? null : debugSong;
         public SongOptions DebugOptions => !Application.isEditor ? null : debugOptions;
 
-        public void DebugStartStage() => InitializeSong(debugSong, debugOptions).Forget();
+        public void DebugStartStage()
+            => InitializeScene().ContinueWith(() => StartScene()).Forget();
 
-        public async UniTask InitializeSong(SongData data, SongOptions options)
+        public override async UniTask InitializeScene()
+        {
+            await base.InitializeScene();
+            await InitializeStage(debugSong, debugOptions);
+        }
+
+        public override UniTask StartScene()
+        {
+            //TODO: Finish view presentation
+            gameplayCoord.ScheduleSong();
+            return UniTask.CompletedTask;
+        }
+
+        private UniTask InitializeStage(SongData data, SongOptions options)
         {
             stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
-            var initTask = gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
-
-            //TODO: Finish view presentation
-
-            await initTask;
-            gameplayCoord.ScheduleSong();
+            return gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
         }
 
         public void EndStage()

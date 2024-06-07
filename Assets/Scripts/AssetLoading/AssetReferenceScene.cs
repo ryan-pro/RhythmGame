@@ -13,7 +13,7 @@ namespace RhythmGame
     public class AssetReferenceScene
     {
         [SerializeField]
-        [AssetReferenceUILabelRestriction("Scene")]
+        [AssetReferenceUILabelRestriction("scene")]
         private AssetReference sceneReference = new();
 
         private AsyncOperationHandle<SceneInstance> sceneOperation;

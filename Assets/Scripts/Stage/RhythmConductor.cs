@@ -5,18 +5,13 @@ namespace RhythmGame
     public class RhythmConductor : MonoBehaviour
     {
         [SerializeField]
-        private SongPlayer song;
-        [SerializeField]
-        private TrackPlayer track;
-
-        [SerializeField]
         private float bpm = 60f;
         [SerializeField]
         private int beatsPerBar = 4;
         [SerializeField]
         private float songStartOffset;
 
-        private float secsPerBeat;
+        private float secondsPerBeat;
 
         private float stageStartTime;
         private float stagePosition;
@@ -32,7 +27,7 @@ namespace RhythmGame
 
         public bool IsStarted => isStarted;
 
-        public float SecsPerBeat => secsPerBeat;
+        public float SecondsPerBeat => secondsPerBeat;
         public int BeatsPerBar => beatsPerBar;
 
         public float StageStartTime => stageStartTime;
@@ -59,7 +54,7 @@ namespace RhythmGame
                 return;
 
             isStarted = true;
-            secsPerBeat = 60f / bpm;
+            secondsPerBeat = 60f / bpm;
             stageStartTime = (float)AudioSettings.dspTime;
         }
 
@@ -70,13 +65,21 @@ namespace RhythmGame
             if (!isStarted)
                 StartConducting();
 
-            var secsPerBar = beatsPerBar * secsPerBeat;
+            var secsPerBar = beatsPerBar * secondsPerBeat;
 
             var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
             var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
 
             songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
             return songStartTime;
+        }
+
+        public float GetSongNextBeatPosition()
+        {
+            var timeDiff = (float)AudioSettings.dspTime - songStartTime;
+            var nextPosition = Mathf.CeilToInt(timeDiff / secondsPerBeat) * secondsPerBeat;
+
+            return Mathf.Max(0f, nextPosition);
         }
 
         private void Update()
@@ -86,13 +89,13 @@ namespace RhythmGame
 
             var curDspTime = (float)AudioSettings.dspTime;
             stagePosition = curDspTime - stageStartTime - songStartOffset;
-            stageBeatPosition = stagePosition / secsPerBeat;
+            stageBeatPosition = stagePosition / secondsPerBeat;
 
             if (songStartTime < 1)
                 return;
 
             songPosition = curDspTime - songStartTime - songStartOffset;
-            songBeatPosition = songPosition / secsPerBeat;
+            songBeatPosition = songPosition / secondsPerBeat;
         }
 
         public bool StartPause()

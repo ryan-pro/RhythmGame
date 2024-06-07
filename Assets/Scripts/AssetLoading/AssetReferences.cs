@@ -5,6 +5,19 @@ using UnityEngine.AddressableAssets;
 namespace RhythmGame
 {
     /// <summary>
+    /// SongData only asset reference.
+    /// </summary>
+    [System.Serializable]
+    public class AssetReferenceSongData : AssetReferenceT<SongData>
+    {
+        /// <summary>
+        /// Constructs a new reference to a SongData.
+        /// </summary>
+        /// <param name="guid">The object guid.</param>
+        public AssetReferenceSongData(string guid) : base(guid) { }
+    }
+
+    /// <summary>
     /// AudioClip only asset reference.
     /// </summary>
     [System.Serializable]

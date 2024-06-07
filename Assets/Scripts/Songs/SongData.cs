@@ -3,6 +3,7 @@ using RhythmGame.Songs;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
@@ -47,13 +48,13 @@ namespace RhythmGame
         public AssetReferenceNotesMap MediumNoteTrack => mediumNoteTrack;
         public AssetReferenceNotesMap HardNoteTrack => hardNoteTrack;
 
-        public async UniTask<NotesMap> LoadNoteMapByDifficulty(SongDifficulty difficulty, CancellationToken token)
+        public AsyncOperationHandle<NotesMap> LoadNoteMapByDifficulty(SongDifficulty difficulty, CancellationToken token)
         {
             return difficulty switch
             {
-                SongDifficulty.Hard => await hardNoteTrack.LoadAssetAsync().WithCancellation(token),
-                SongDifficulty.Medium => await mediumNoteTrack.LoadAssetAsync().WithCancellation(token),
-                _ => await easyNoteTrack.LoadAssetAsync().WithCancellation(token)
+                SongDifficulty.Hard => hardNoteTrack.LoadAssetAsync(),
+                SongDifficulty.Medium => mediumNoteTrack.LoadAssetAsync(),
+                _ => easyNoteTrack.LoadAssetAsync()
             };
         }
     }
