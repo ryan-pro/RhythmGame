@@ -33,9 +33,18 @@ namespace RhythmGame
 
         public override UniTask StartScene()
         {
-            //TODO: Finish view presentation
-            gameplayCoord.ScheduleSong();
+            //TODO: Stage presentation, effects, etc.
+            PlayStage().Forget();
+
             return UniTask.CompletedTask;
+        }
+
+        private async UniTask PlayStage()
+        {
+            await gameplayCoord.PlaySong();
+
+            //TODO: End-stage presentation, loading of results screen
+            Debug.Log("Stage ended!");
         }
 
         private UniTask InitializeStage(SongData data, SongOptions options)

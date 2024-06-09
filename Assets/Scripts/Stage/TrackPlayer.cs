@@ -17,15 +17,18 @@ namespace RhythmGame
         [SerializeField]
         private Track[] tracks;
 
+        private RhythmConductor conductor;
         private int beatsBeforeNoteSpawn;
 
-        private AsyncOperationHandle<NotesMap> loadedNotesMap;
+        private AsyncOperationHandle<NotesMap> mapHandle;
+        private NotesMap loadedMap;
         private NoteData[] notes = new NoteData[0];
 
         CancellationToken stageToken;
 
-        public void Initialize(int beatsBeforeNoteSpawn, float greatThreshold, float okayThreshold)
+        public void Initialize(RhythmConductor conductor, int beatsBeforeNoteSpawn, float greatThreshold, float okayThreshold)
         {
+            this.conductor = conductor;
             this.beatsBeforeNoteSpawn = beatsBeforeNoteSpawn;
 
             foreach (var track in tracks)
@@ -36,11 +39,12 @@ namespace RhythmGame
         {
             stageToken = token;
 
-            if (loadedNotesMap.IsValid())
-                Addressables.Release(loadedNotesMap);
+            if (mapHandle.IsValid())
+                Addressables.Release(mapHandle);
 
-            loadedNotesMap = songData.LoadNoteMapByDifficulty(difficulty, token);
-            notes = (await loadedNotesMap.WithCancellation(token)).NotesList.ToArray();
+            mapHandle = songData.LoadNoteMapByDifficulty(difficulty, token);
+            loadedMap = await mapHandle.WithCancellation(token);
+            notes = loadedMap.NotesList.ToArray();
 
             //TODO: Determine how many notes show at most populated point
             await notePrefabPool.PopulatePool(token);
@@ -50,19 +54,13 @@ namespace RhythmGame
         {
             Array.Clear(notes, 0, notes.Length);
 
-            if (loadedNotesMap.IsValid())
-                Addressables.Release(loadedNotesMap);
+            if (mapHandle.IsValid())
+                Addressables.Release(mapHandle);
         }
 
-        public void ScheduleSong(RhythmConductor conductor)
-        {
-            UpdateNotes(conductor).Forget();
-        }
-
-        private async UniTaskVoid UpdateNotes(RhythmConductor conductor)
+        public async UniTask PlayScheduledSong()
         {
             await UniTask.WaitUntil(() => conductor.SongStartTime > 1f);
-
             int noteIndex = 0;
 
             await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, s => s.SongBeatPosition).WithCancellation(stageToken))
@@ -80,8 +78,29 @@ namespace RhythmGame
 
                     track.AddNote(startPosition, floatPosition, stageToken);
                     noteIndex++;
+
+                    if (noteIndex >= notes.Length)
+                        break;
                 }
             }
+        }
+
+        public (float lastNoteBeat, float songEndBeat) GetEndTimeInBeats()
+        {
+            var lastNotePosition = (float)notes[notes.Length - 1].BeatPosition;
+
+            if (!loadedMap.FadeOutOnLastNote)
+                return (lastNotePosition, -1f);
+
+            var fadeOutPosition = lastNotePosition + loadedMap.FadeOutInBeats;
+
+            if (fadeOutPosition < conductor.SongBeatPosition)
+            {
+                Debug.LogError("Fade out position is before last note position.");
+                return (lastNotePosition, lastNotePosition);
+            }
+
+            return (lastNotePosition, fadeOutPosition);
         }
 
         public void StartPause()

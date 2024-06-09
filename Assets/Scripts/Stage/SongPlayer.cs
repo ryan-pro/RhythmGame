@@ -14,6 +14,14 @@ namespace RhythmGame
 
         private AsyncOperationHandle<AudioClip> loadedClip;
 
+        public bool IsPlaying => songSource.isPlaying;
+
+        public float SongVolume
+        {
+            get => songSource.volume;
+            set => songSource.volume = value;
+        }
+
         private void Reset() => songSource = GetComponent<AudioSource>();
 
         public async UniTask LoadClip(SongData songData, CancellationToken token)
@@ -37,6 +45,12 @@ namespace RhythmGame
         {
             songSource.PlayScheduled(dspTime);
             Debug.Log($"Scheduled song start in {AudioSettings.dspTime - dspTime:N2} seconds!");
+        }
+
+        public void StopSong()
+        {
+            songSource.Stop();
+            songSource.volume = 1f;
         }
 
         public void StartPause() => songSource.Pause();

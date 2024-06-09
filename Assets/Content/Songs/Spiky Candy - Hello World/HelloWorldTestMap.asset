@@ -109,3 +109,5 @@ MonoBehaviour:
     beatPosition: 54
   - trackIndex: 3
     beatPosition: 56
+  FadeOutOnLastNote: 1
+  FadeOutInBeats: 4

@@ -27,21 +27,25 @@ namespace RhythmGame
         [SerializeField]
         private float okayHitThreshold = 0.4f;
 
+        private CancellationToken stageToken;
+
         public UniTask InitializeGameplayComponents(SongData data, SongOptions options, CancellationToken token)
         {
-            var songLoad = songPlayer.LoadClip(data, token);
-            var notesLoad = trackPlayer.LoadNotes(data, options.Difficulty, token);
+            stageToken = token;
+
+            var songLoad = songPlayer.LoadClip(data, stageToken);
+            var notesLoad = trackPlayer.LoadNotes(data, options.Difficulty, stageToken);
 
             var startOffset = data.StartOffset + options.CustomOffset;
             conductor.StartConducting(data.BPM, data.BeatsPerBar, startOffset);
 
-            trackPlayer.Initialize(beatsBeforeNoteSpawn, greatHitThreshold, okayHitThreshold);
+            trackPlayer.Initialize(conductor, beatsBeforeNoteSpawn, greatHitThreshold, okayHitThreshold);
             barView.Initialize(data.BeatsPerBar, beatsBeforeNoteSpawn);
 
             return UniTask.WhenAll(songLoad, notesLoad);
         }
 
-        public void ScheduleSong()
+        public async UniTask PlaySong()
         {
             if (!conductor.IsStarted)
             {
@@ -51,7 +55,38 @@ namespace RhythmGame
 
             var startTime = conductor.ScheduleNewSongStart();
             songPlayer.ScheduleSong(startTime);
-            trackPlayer.ScheduleSong(conductor);
+            await trackPlayer.PlayScheduledSong();
+
+            var (lastNoteBeat, songEndBeat) = trackPlayer.GetEndTimeInBeats();
+            await EndSong(lastNoteBeat, songEndBeat);
+        }
+
+        private async UniTask EndSong(float lastNoteBeat, float endTimeInBeats)
+        {
+            if (Mathf.Approximately(endTimeInBeats, -1f))
+            {
+                await UniTask.WaitWhile(() => songPlayer.IsPlaying, cancellationToken: stageToken).SuppressCancellationThrow();
+                return;
+            }
+
+            if (endTimeInBeats > lastNoteBeat)
+            {
+                var startVolume = songPlayer.SongVolume;
+                var duration = endTimeInBeats - lastNoteBeat;
+
+                Debug.Log("Last note time = " + lastNoteBeat);
+                Debug.Log("Target end time = " + endTimeInBeats);
+
+                while (songPlayer.IsPlaying && conductor.SongBeatPosition <= endTimeInBeats)
+                {
+                    songPlayer.SongVolume = Mathf.Lerp(startVolume, 0f, (conductor.SongBeatPosition - lastNoteBeat) / duration);
+
+                    if (await UniTask.Yield(stageToken).SuppressCancellationThrow())
+                        break;
+                }
+            }
+
+            songPlayer.StopSong();
         }
 
         public void StartPause()

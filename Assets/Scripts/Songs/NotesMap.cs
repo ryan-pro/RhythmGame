@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks.Linq;
-using Cysharp.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 
@@ -10,6 +9,11 @@ namespace RhythmGame.Songs
     {
         [SerializeField]
         private NoteData[] notesList = new NoteData[0];
+
+        [Header("Configuration")]
+        public bool FadeOutOnLastNote;
+        public float FadeOutInBeats = 2f;
+
         private bool sorted;
 
         public NoteData[] NotesList
