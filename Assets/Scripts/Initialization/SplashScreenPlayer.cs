@@ -11,8 +11,14 @@ namespace RhythmGame.Initialization
 
         private bool stopTriggered;
 
+        //To show the enabled checkbox in the inspector
+        private void OnEnable() { }
+
         public async UniTask PlaySplashScreen()
         {
+            if (!enabled)
+                return;
+
             if (!SplashScreen.isFinished)
             {
                 Debug.LogError("Splash screen already playing!");
@@ -22,7 +28,7 @@ namespace RhythmGame.Initialization
             Debug.Log("Splash screen beginning.");
             SplashScreen.Begin();
 
-            while(!SplashScreen.isFinished)
+            while (Application.isPlaying && !SplashScreen.isFinished)
             {
                 SplashScreen.Draw();
                 await UniTask.Yield();
@@ -33,7 +39,7 @@ namespace RhythmGame.Initialization
 
         public void StopSplashScreen()
         {
-            if(stopTriggered)
+            if (!enabled || stopTriggered)
                 return;
 
             stopTriggered = true;
