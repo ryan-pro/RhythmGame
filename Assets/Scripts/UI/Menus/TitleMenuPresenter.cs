@@ -1,12 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +17,7 @@ namespace RhythmGame.UI
         [SerializeField]
         private Image titleTextImage;
         [SerializeField]
-        private TextMeshProUGUI tapText;
+        private CanvasGroup tapText;
 
         public void ResetAll(float duration, CancellationToken token)
         {

@@ -1274,6 +1274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 012a5cdf6a475534183ff377a6b76b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugStartSceneOnAwake: 1
   synchronizer: {fileID: 1047479030}
   menuItems:
   - Key: Title
@@ -1735,7 +1736,7 @@ MonoBehaviour:
   menuCanvasGroup: {fileID: 199446899}
   logoCanvasGroup: {fileID: 1784625926}
   titleTextImage: {fileID: 1980673059}
-  tapText: {fileID: 1550799918}
+  tapText: {fileID: 1550799920}
 --- !u!1 &1477791238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1870,6 +1871,7 @@ GameObject:
   - component: {fileID: 1550799917}
   - component: {fileID: 1550799919}
   - component: {fileID: 1550799918}
+  - component: {fileID: 1550799920}
   m_Layer: 5
   m_Name: TapToContinue
   m_TagString: Untagged
@@ -1993,6 +1995,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1550799916}
   m_CullTransparentMesh: 1
+--- !u!225 &1550799920
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1550799916}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1597120973
 GameObject:
   m_ObjectHideFlags: 0
