@@ -1,7 +1,7 @@
 # BeatNova
 **BeatNova** is a rhythm game developed as a portfolio project. Styled after games like Chunithm, Arcaea, and Guitar Hero, players are tasked with tapping notes as they travel down a track in sync with the music.
 
-This project is targeting mobile devices, and has been tested on Android. It is playable on PC in a development context.
+This project is targeting mobile devices, and has been tested on Android. It is playable on PC in a development context. Using Unity 2022.3.29f for development.
 
 ## Project Overview
 Rhythm games pose challenges unique to their genre, and it's what drew me to try making one myself. In particular, synchronization between audio and visual presentation is critical; if the music and notes are out of sync by even a little bit, then the game becomes a frustrating mess to play.
@@ -15,20 +15,20 @@ BeatNova, as a game, is very much a **work-in-progress**. This is largely a rese
 All art assets, unless stated otherwise, are AI-generated.
 
 ## Current Features
-- **Basic Gameplay Mechanics:** Players can tap on each lane of the track. Tap-hold input is registered, but no gameplay elements yet use it.
-- **Audio Visual Synchronization:** Visual elements synchronize with the music beats.
-- **User Interface:** Title screen and basic main menu implemented, with music-synchronized elements.
+- **Basic gameplay mechanics:** Players can tap on each lane of the track. Tap-hold input is registered, but no gameplay elements yet use it.
+- **Audio-visual synchronization:** Visual elements synchronize with the music beats.
+- **Some user interface:** Title screen and basic main menu implemented, with music-synchronized elements. Simple results screen implemented.
 
 ## Roadmap
 ### Short-term Goals
 - **Code comments:** As a portfolio project, more comments are needed to explain some areas of the codebase.
-- **Stage ending logic:** Currently, once a song ends, nothing happens. Needs a results screen and a means to return to menu.
 - **In-game feedback:** Game lacks any visual or other feedback for hitting notes. No in-game way to tell if you hit the note correctly.
 - **Pause screen:** Some basic logic for pausing exists, but is not yet implemented.
-- **Enhanced Visual Effects:** Stage needs visual elements behind the main track visual.
+- **Audio-visual sync calibrator:** Some devices introduce audio or visual lag; a calibration tool is essential.
 
 ### Long-term Goals
-- **Audio-visual sync calibrator:** Some devices introduce audio or visual lag; a calibration tool is essential.
+- **Enhanced visual effects:** Stage needs visual elements behind the main track visual.
+- **Scoring system:** Player should be scored based on hit type, streak, etc.
 - **Song selection menu:** Menu should list every playable song along with available song info when selected.
 - **Working options menu:** Add a menu to change game settings, calibrate audio-visual synchronization, etc.
 - **Better notes editor:** Placing notes is too manual and tedious to do. A better way can be made, either in-editor or with an external tool.
