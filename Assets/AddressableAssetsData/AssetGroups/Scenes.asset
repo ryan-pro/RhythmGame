@@ -18,13 +18,19 @@ MonoBehaviour:
   m_GUID: 75cee4f941733c64baa22844c8d8431c
   m_SerializeEntries:
   - m_GUID: 091f8e7f255091c47b3c2dfb73be0017
-    m_Address: TitleMenu
+    m_Address: GameMenus
     m_ReadOnly: 0
     m_SerializedLabels:
     - scene
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 623c044caf9580648a88fc03194322cb
     m_Address: Ingame
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7be31f7f4784840479d2bd1484f069ca
+    m_Address: ResultsScreen
     m_ReadOnly: 0
     m_SerializedLabels:
     - scene

@@ -1,13 +1,17 @@
 ﻿using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using RhythmGame.Songs;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RhythmGame
 {
     public class GameplayCoordinator : MonoBehaviour
     {
+        [Header("External References")]
+        [SerializeField]
+        private AssetReferenceScene resultsSceneRef;
+
         [Header("Scene References")]
         [SerializeField]
         private RhythmConductor conductor;
@@ -84,6 +88,20 @@ namespace RhythmGame
             }
 
             songPlayer.StopSong();
+        }
+
+        public async UniTask ShowResults()
+        {
+            trackPlayer.SetInputEnabled(false);
+
+            var hitResults = trackPlayer.GetNoteHitCounts();
+            var sceneInstance = await resultsSceneRef.LoadSceneAsync(LoadSceneMode.Additive, true, stageToken);
+
+            var resultsController = sceneInstance.Scene.FindInSceneRoot<ResultsController>();
+            resultsController.SetResults(hitResults.GreatCount, hitResults.OkayCount, hitResults.MissCount);
+
+            await resultsController.Display();
+            resultsSceneRef.UnloadSceneAsync().Forget();
         }
 
         public void StartPause()

@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks.Linq;
 using RhythmGame.Songs;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -113,6 +114,40 @@ namespace RhythmGame
             //TODO: Resume trackController/set TimeScale to 1
         }
 
+        public void SetInputEnabled(bool enabled)
+        {
+            foreach (var track in tracks)
+                track.InputEnabled = enabled;
+        }
+
+        public NoteHitCounts GetNoteHitCounts()
+        {
+            int greatCount = 0;
+            int okayCount = 0;
+            int missCount = 0;
+
+            foreach (var track in tracks)
+            {
+                greatCount += track.NoteHits[NoteHitRating.Great];
+                okayCount += track.NoteHits[NoteHitRating.Okay];
+                missCount += track.NoteHits[NoteHitRating.Miss];
+            }
+
+            return new NoteHitCounts
+            {
+                GreatCount = greatCount,
+                OkayCount = okayCount,
+                MissCount = missCount
+            };
+        }
+
         private void OnDestroy() => UnloadNotes();
+    }
+
+    public struct NoteHitCounts
+    {
+        public int GreatCount;
+        public int OkayCount;
+        public int MissCount;
     }
 }

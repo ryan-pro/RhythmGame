@@ -22,8 +22,7 @@ namespace RhythmGame.UI
         private MenuItem[] menuItems;
 
         [Header("Configuration")]
-        [SerializeField]
-        private string startingMenuKey = "Title";
+        public string StartingMenuKey = "Title";
 
         private readonly Dictionary<string, BaseMenu> menuDictionary = new();
 
@@ -58,7 +57,7 @@ namespace RhythmGame.UI
                 menuDictionary.Add(item.Key, item.Value);
 
             await conductTask;
-            await ChangeScene(startingMenuKey, lifetimeToken);
+            await ChangeScene(StartingMenuKey, lifetimeToken);
         }
 
         public async UniTask ChangeScene(string sceneKey, CancellationToken token)

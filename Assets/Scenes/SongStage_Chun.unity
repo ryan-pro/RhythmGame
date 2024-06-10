@@ -777,6 +777,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugStartSceneOnAwake: 1
+  menuSceneRef:
+    sceneReference:
+      m_AssetGUID: 091f8e7f255091c47b3c2dfb73be0017
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   gameplayCoord: {fileID: 334996624}
   debugSong: {fileID: 11400000, guid: ae5644d45e2d80f42a9afd394ff0950c, type: 2}
   debugOptions:
@@ -813,6 +819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b326fb51456cb4b9ce45f81906c290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resultsSceneRef:
+    sceneReference:
+      m_AssetGUID: 7be31f7f4784840479d2bd1484f069ca
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   conductor: {fileID: 1980449468}
   songPlayer: {fileID: 2083648116}
   trackPlayer: {fileID: 1791935031}

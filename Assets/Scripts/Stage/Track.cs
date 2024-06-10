@@ -34,15 +34,24 @@ namespace RhythmGame
         [SerializeField]
         private SpriteRenderer trackLight;
 
+        [Header("Configuration")]
+        public bool InputEnabled = true;
+
         private float greatThreshold = 0.1f;
         private float okayThreshold = 0.2f;
 
         private readonly Queue<UniTask<NoteObject>> loadQueue = new();
         private readonly List<NoteObject> noteQueue = new();
 
-        private List<TimedInputData> inputIDs = new(2);
         private readonly Dictionary<int, float> inputTimers = new(5);
         private readonly int[] expiredIDs = new int[5];
+
+        public readonly Dictionary<NoteHitRating, int> NoteHits = new()
+        {
+            { NoteHitRating.Great, 0 },
+            { NoteHitRating.Okay, 0 },
+            { NoteHitRating.Miss, 0 }
+        };
 
         public Transform Start => start;
         public Transform End => end;
@@ -72,11 +81,15 @@ namespace RhythmGame
                     break;
 
                 noteQueue.Remove(note);
+                NoteHits[NoteHitRating.Miss]++;
             }
         }
 
         public void HandleTouchStart(int inputIndex = 0)
         {
+            if (!InputEnabled)
+                return;
+
             var curBeat = conductor.SongBeatPosition;
             inputTimers[inputIndex] = Time.time;
 
@@ -98,16 +111,19 @@ namespace RhythmGame
             {
                 trackLight.color = Color.green;
                 closestNote.SetNoteHitRating(NoteHitRating.Great);
+                NoteHits[NoteHitRating.Great]++;
             }
             else if (distance <= okayThreshold)
             {
                 trackLight.color = Color.yellow;
                 closestNote.SetNoteHitRating(NoteHitRating.Okay);
+                NoteHits[NoteHitRating.Okay]++;
             }
             else
             {
                 trackLight.color = Color.red;
                 closestNote.SetNoteHitRating(NoteHitRating.Miss);
+                NoteHits[NoteHitRating.Miss]++;
             }
 
             //Discard other notes as missed
@@ -125,7 +141,10 @@ namespace RhythmGame
 
         public void HandleTouchHold(int inputIndex = 0)
         {
-            if(inputTimers.Count == 0)
+            if (!InputEnabled)
+                return;
+
+            if (inputTimers.Count == 0)
             {
                 HandleTouchStart(inputIndex);
                 return;
@@ -138,10 +157,10 @@ namespace RhythmGame
 
         public void HandleTouchEnd(int inputIndex = 0)
         {
-            if(!inputTimers.Remove(inputIndex))
+            if (!inputTimers.Remove(inputIndex))
                 return;
 
-            if(inputTimers.Count > 0)
+            if (inputTimers.Count > 0)
                 return;
 
             trackLight.enabled = false;
