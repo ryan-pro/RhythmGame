@@ -13,101 +13,57 @@ MonoBehaviour:
   m_Name: HelloWorldTestMap
   m_EditorClassIdentifier: 
   notesList:
-  - trackIndex: 0
-    beatPosition: 1
-  - trackIndex: 1
-    beatPosition: 2
-  - trackIndex: 2
-    beatPosition: 3
-  - trackIndex: 3
-    beatPosition: 4
   - trackIndex: 4
-    beatPosition: 5
-  - trackIndex: 0
+    beatPosition: 4.5
+  - trackIndex: 3
     beatPosition: 6
-  - trackIndex: 1
-    beatPosition: 7
   - trackIndex: 2
     beatPosition: 8
-  - trackIndex: 3
-    beatPosition: 9
-  - trackIndex: 4
-    beatPosition: 10
-  - trackIndex: 0
-    beatPosition: 11
   - trackIndex: 1
-    beatPosition: 11.5
+    beatPosition: 8.5
   - trackIndex: 0
     beatPosition: 12
-  - trackIndex: 4
-    beatPosition: 13
-  - trackIndex: 3
-    beatPosition: 13.5
-  - trackIndex: 4
-    beatPosition: 14
+  - trackIndex: 1
+    beatPosition: 12.5
   - trackIndex: 2
-    beatPosition: 15
-  - trackIndex: 3
-    beatPosition: 16
-  - trackIndex: 3
-    beatPosition: 17
-  - trackIndex: 3
-    beatPosition: 18
-  - trackIndex: 3
+    beatPosition: 13
+  - trackIndex: 1
+    beatPosition: 14.5
+  - trackIndex: 0
+    beatPosition: 15.5
+  - trackIndex: 2
     beatPosition: 19
-  - trackIndex: 3
+  - trackIndex: 1
     beatPosition: 20
-  - trackIndex: 3
+  - trackIndex: 0
     beatPosition: 21
-  - trackIndex: 3
-    beatPosition: 22
-  - trackIndex: 3
-    beatPosition: 22.5
-  - trackIndex: 3
+  - trackIndex: 4
     beatPosition: 23
   - trackIndex: 3
-    beatPosition: 23.5
-  - trackIndex: 3
     beatPosition: 24
-  - trackIndex: 3
-    beatPosition: 25
-  - trackIndex: 3
-    beatPosition: 26
-  - trackIndex: 3
+  - trackIndex: 2
+    beatPosition: 24.5
+  - trackIndex: 2
     beatPosition: 27
-  - trackIndex: 3
+  - trackIndex: 1
+    beatPosition: 27.5
+  - trackIndex: 0
     beatPosition: 28
-  - trackIndex: 3
+  - trackIndex: 1
+    beatPosition: 28.5
+  - trackIndex: 2
     beatPosition: 29
   - trackIndex: 3
     beatPosition: 30
+  - trackIndex: 4
+    beatPosition: 31.5
   - trackIndex: 3
-    beatPosition: 31
-  - trackIndex: 3
-    beatPosition: 32
-  - trackIndex: 3
-    beatPosition: 34
-  - trackIndex: 3
-    beatPosition: 36
-  - trackIndex: 3
-    beatPosition: 38
-  - trackIndex: 3
-    beatPosition: 40
-  - trackIndex: 3
-    beatPosition: 42
-  - trackIndex: 3
-    beatPosition: 44
-  - trackIndex: 3
-    beatPosition: 46
-  - trackIndex: 3
-    beatPosition: 48
-  - trackIndex: 3
-    beatPosition: 50
-  - trackIndex: 3
-    beatPosition: 52
-  - trackIndex: 3
-    beatPosition: 54
-  - trackIndex: 3
-    beatPosition: 56
+    beatPosition: 32.5
+  - trackIndex: 1
+    beatPosition: 32.5
+  - trackIndex: 2
+    beatPosition: 34.5
+  - trackIndex: 1
+    beatPosition: 35.5
   FadeOutOnLastNote: 1
   FadeOutInBeats: 4

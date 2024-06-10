@@ -74,9 +74,6 @@ namespace RhythmGame
                 var startVolume = songPlayer.SongVolume;
                 var duration = endTimeInBeats - lastNoteBeat;
 
-                Debug.Log("Last note time = " + lastNoteBeat);
-                Debug.Log("Target end time = " + endTimeInBeats);
-
                 while (songPlayer.IsPlaying && conductor.SongBeatPosition <= endTimeInBeats)
                 {
                     songPlayer.SongVolume = Mathf.Lerp(startVolume, 0f, (conductor.SongBeatPosition - lastNoteBeat) / duration);

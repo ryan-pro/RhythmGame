@@ -818,8 +818,8 @@ MonoBehaviour:
   trackPlayer: {fileID: 1791935031}
   barView: {fileID: 2063483887}
   beatsBeforeNoteSpawn: 6
-  greatHitThreshold: 0.2
-  okayHitThreshold: 0.38
+  greatHitThreshold: 0.25
+  okayHitThreshold: 0.45
 --- !u!1 &417656889
 GameObject:
   m_ObjectHideFlags: 0
