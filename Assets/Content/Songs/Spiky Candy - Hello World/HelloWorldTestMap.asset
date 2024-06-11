@@ -38,9 +38,9 @@ MonoBehaviour:
   - trackIndex: 0
     beatPosition: 21
   - trackIndex: 4
-    beatPosition: 23
+    beatPosition: 22.5
   - trackIndex: 3
-    beatPosition: 24
+    beatPosition: 23.5
   - trackIndex: 2
     beatPosition: 24.5
   - trackIndex: 2

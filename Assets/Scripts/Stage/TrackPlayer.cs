@@ -1,8 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Linq;
-using RhythmGame.Songs;
+using RhythmGame.SongModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
@@ -11,6 +10,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Manages the spawning and tracking of notes on the tracks.
+    /// </summary>
     public class TrackPlayer : MonoBehaviour
     {
         [SerializeField]
@@ -36,6 +38,9 @@ namespace RhythmGame
                 track.SetScoreThresholds(greatThreshold, okayThreshold);
         }
 
+        /// <summary>
+        /// Loads the notes for the song and difficulty specified.
+        /// </summary>
         public async UniTask LoadNotes(SongData songData, SongDifficulty difficulty, CancellationToken token)
         {
             stageToken = token;
@@ -43,7 +48,7 @@ namespace RhythmGame
             if (mapHandle.IsValid())
                 Addressables.Release(mapHandle);
 
-            mapHandle = songData.LoadNoteMapByDifficulty(difficulty, token);
+            mapHandle = songData.LoadNoteMap(difficulty);
             loadedMap = await mapHandle.WithCancellation(token);
             notes = loadedMap.NotesList.ToArray();
 
@@ -51,6 +56,9 @@ namespace RhythmGame
             await notePrefabPool.PopulatePool(token);
         }
 
+        /// <summary>
+        /// Clears notes cache and unloads the notes from memory.
+        /// </summary>
         public void UnloadNotes()
         {
             Array.Clear(notes, 0, notes.Length);
@@ -59,11 +67,16 @@ namespace RhythmGame
                 Addressables.Release(mapHandle);
         }
 
-        public async UniTask PlayScheduledSong()
+        /// <summary>
+        /// Plays the notes for the loaded song.
+        /// </summary>
+        /// <returns>Returns when the notes have finished playing.</returns>
+        public async UniTask PlayNotes()
         {
-            await UniTask.WaitUntil(() => conductor.SongStartTime > 1f);
+            //await UniTask.WaitUntil(() => conductor.SongStartTime > 1f);
             int noteIndex = 0;
 
+            //Acts as an update loop, filtered by changes in the song's beat position
             await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, s => s.SongBeatPosition).WithCancellation(stageToken))
             {
                 if (noteIndex >= notes.Length)
@@ -86,24 +99,6 @@ namespace RhythmGame
             }
         }
 
-        public (float lastNoteBeat, float songEndBeat) GetEndTimeInBeats()
-        {
-            var lastNotePosition = (float)notes[notes.Length - 1].BeatPosition;
-
-            if (!loadedMap.FadeOutOnLastNote)
-                return (lastNotePosition, -1f);
-
-            var fadeOutPosition = lastNotePosition + loadedMap.FadeOutInBeats;
-
-            if (fadeOutPosition < conductor.SongBeatPosition)
-            {
-                Debug.LogError("Fade out position is before last note position.");
-                return (lastNotePosition, lastNotePosition);
-            }
-
-            return (lastNotePosition, fadeOutPosition);
-        }
-
         public void StartPause()
         {
             //TODO: Pause trackController/set TimeScale to 0
@@ -114,12 +109,18 @@ namespace RhythmGame
             //TODO: Resume trackController/set TimeScale to 1
         }
 
+        /// <summary>
+        /// Enables or disables input for all tracks.
+        /// </summary>
         public void SetInputEnabled(bool enabled)
         {
             foreach (var track in tracks)
                 track.InputEnabled = enabled;
         }
 
+        /// <summary>
+        /// Gets the total number of notes hit on all tracks by rating.
+        /// </summary>
         public NoteHitCounts GetNoteHitCounts()
         {
             int greatCount = 0;
@@ -139,6 +140,28 @@ namespace RhythmGame
                 OkayCount = okayCount,
                 MissCount = missCount
             };
+        }
+
+        /// <summary>
+        /// Helper method to get the last note's beat position and the song's end beat position.
+        /// </summary>
+        /// <returns>Beat position of the last note, beat position of the target end time.</returns>
+        public (float lastNoteBeat, float songEndBeat) GetEndTimeInBeats()
+        {
+            var lastNotePosition = (float)notes[notes.Length - 1].BeatPosition;
+
+            if (!loadedMap.FadeOutOnLastNote)
+                return (lastNotePosition, -1f);
+
+            var fadeOutPosition = lastNotePosition + loadedMap.FadeOutInBeats;
+
+            if (fadeOutPosition < conductor.SongBeatPosition)
+            {
+                Debug.LogError("Fade out position is before last note position.");
+                return (lastNotePosition, lastNotePosition);
+            }
+
+            return (lastNotePosition, fadeOutPosition);
         }
 
         private void OnDestroy() => UnloadNotes();

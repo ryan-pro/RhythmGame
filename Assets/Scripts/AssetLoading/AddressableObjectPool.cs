@@ -27,7 +27,7 @@ namespace RhythmGame
             while (allObjects.Count < minimumCount)
             {
                 var newObject = Instantiate(loadedAsset, poolParent);
-                newObject.InitPooledObject(this);
+                newObject.InitializePooledObject(this);
 
                 allObjects.Add(newObject);
                 availableObjects.Enqueue(newObject);
@@ -42,7 +42,7 @@ namespace RhythmGame
                     await LoadPrefab(token);
 
                 toReturn = Instantiate(loadedAsset, poolParent);
-                toReturn.InitPooledObject(this);
+                toReturn.InitializePooledObject(this);
                 allObjects.Add(toReturn);
             }
 

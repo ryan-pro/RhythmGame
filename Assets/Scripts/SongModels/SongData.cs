@@ -1,6 +1,4 @@
-using Cysharp.Threading.Tasks;
-using RhythmGame.Songs;
-using System.Threading;
+using RhythmGame.SongModels;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -48,7 +46,12 @@ namespace RhythmGame
         public AssetReferenceNotesMap MediumNoteTrack => mediumNoteTrack;
         public AssetReferenceNotesMap HardNoteTrack => hardNoteTrack;
 
-        public AsyncOperationHandle<NotesMap> LoadNoteMapByDifficulty(SongDifficulty difficulty, CancellationToken token)
+        /// <summary>
+        /// Loads the note map for the specified difficulty.
+        /// </summary>
+        /// <param name="difficulty">The difficulty level associated with the notes map.</param>
+        /// <returns>A handle for the load operation, which can be used to release the asset later.</returns>
+        public AsyncOperationHandle<NotesMap> LoadNoteMap(SongDifficulty difficulty)
         {
             return difficulty switch
             {

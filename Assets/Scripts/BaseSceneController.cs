@@ -12,6 +12,7 @@ namespace RhythmGame
 
         public bool IsInitialized { get; protected set; }
 
+        //For instances where we want to start the scene from the editor
         protected virtual void Awake()
         {
             //If audio system isn't initialized before scene loads,
@@ -21,12 +22,19 @@ namespace RhythmGame
                 InitializeScene().ContinueWith(() => StartScene()).Forget();
         }
 
+        /// <summary>
+        /// Handles any loading or setup that needs to be done before the scene starts.
+        /// </summary>
         public virtual UniTask InitializeScene()
         {
             IsInitialized = true;
             return UniTask.CompletedTask;
         }
 
-        public abstract UniTask StartScene();
+        /// <summary>
+        /// Executes the start of the scene.
+        /// Should return once the scene is ready to be interacted with.
+        /// </summary>
+        public abstract UniTask StartScene();   //Should return when the scene is ready to be interacted with
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RhythmGame.Songs
+namespace RhythmGame.SongModels
 {
     [System.Serializable]
     public struct NoteData
@@ -10,7 +10,7 @@ namespace RhythmGame.Songs
         [SerializeField, Min(0)]
         private double beatPosition;
 
-        public int TrackIndex => trackIndex;
-        public double BeatPosition => beatPosition;
+        public readonly int TrackIndex => trackIndex;
+        public readonly double BeatPosition => beatPosition;
     }
 }

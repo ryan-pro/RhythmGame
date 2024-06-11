@@ -2,6 +2,10 @@
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Conducts the rhythm of the game by calculating the beat positions of the stage and song.
+    /// Stage beats and song beats are synchronized; beats can be measured even when a song isn't playing.
+    /// </summary>
     public class RhythmConductor : MonoBehaviour
     {
         [SerializeField]
@@ -36,6 +40,12 @@ namespace RhythmGame
         public float SongStartTime => songStartTime;
         public float SongBeatPosition => songBeatPosition;
 
+        /// <summary>
+        /// Begin calculating beats using the specified BPM, beats-per-bar, and offset.
+        /// </summary>
+        /// <param name="bpm">Beats-per-minute of the song.</param>
+        /// <param name="beatsPerBar">The number of beats that make up a bar/measure.</param>
+        /// <param name="offset">Offset used to adjust the song's start time relative to the beat.</param>
         public void StartConducting(float bpm, int beatsPerBar, float offset)
         {
             if (isStarted)
@@ -48,6 +58,9 @@ namespace RhythmGame
             StartConducting();
         }
 
+        /// <summary>
+        /// Begin calculating beats using the BPM and beats-per-bar already set.
+        /// </summary>
         public void StartConducting()
         {
             if(isStarted)
@@ -58,29 +71,10 @@ namespace RhythmGame
             stageStartTime = (float)AudioSettings.dspTime;
         }
 
+        /// <summary>
+        /// Signals the conductor to stop calculating beats.
+        /// </summary>
         public void StopConducting() => isStarted = false;
-
-        public float ScheduleNewSongStart()
-        {
-            if (!isStarted)
-                StartConducting();
-
-            var secsPerBar = beatsPerBar * secondsPerBeat;
-
-            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
-            var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
-
-            songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
-            return songStartTime;
-        }
-
-        public float GetSongNextBeatPosition()
-        {
-            var timeDiff = (float)AudioSettings.dspTime - songStartTime;
-            var nextPosition = Mathf.CeilToInt(timeDiff / secondsPerBeat) * secondsPerBeat;
-
-            return Mathf.Max(0f, nextPosition);
-        }
 
         private void Update()
         {
@@ -98,6 +92,42 @@ namespace RhythmGame
             songBeatPosition = songPosition / secondsPerBeat;
         }
 
+        /// <summary>
+        /// Starts conducting if necessary,
+        /// and then sets the song's start time to the next bar.
+        /// Note: This method does not start the song, it only determines the start time.
+        /// </summary>
+        /// <returns>The song's calculated start time, also cached by RhythmConductor.</returns>
+        public float SetSongStartTime()
+        {
+            if (!isStarted)
+                StartConducting();
+
+            var secsPerBar = beatsPerBar * secondsPerBeat;
+
+            var timeDiff = (float)AudioSettings.dspTime - stageStartTime;
+            var barsSinceStart = Mathf.FloorToInt(timeDiff / secsPerBar);
+
+            songStartTime = stageStartTime + ((barsSinceStart + 1) * secsPerBar);
+            return songStartTime;
+        }
+
+        /// <summary>
+        /// Returns the next beat position in the song in seconds.
+        /// </summary>
+        /// <returns>The position of the next beat.</returns>
+        public float GetSongNextBeatPosition()
+        {
+            var timeDiff = (float)AudioSettings.dspTime - songStartTime;
+            var nextPosition = Mathf.CeilToInt(timeDiff / secondsPerBeat) * secondsPerBeat;
+
+            return Mathf.Max(0f, nextPosition);
+        }
+
+        /// <summary>
+        /// Pauses the conductor and caches the time of the pause.
+        /// </summary>
+        /// <returns>Returns true if pause was successful, false when already paused.</returns>
         public bool StartPause()
         {
             if(isPaused)
@@ -109,6 +139,10 @@ namespace RhythmGame
             return true;
         }
 
+        /// <summary>
+        /// Resumes the conductor and adjusts the start times to account for the pause.
+        /// </summary>
+        /// <returns>Returns true if game successfully resumed, false when already unpaused.</returns>
         public bool EndPause()
         {
             if(!isPaused)

@@ -19,7 +19,7 @@ namespace RhythmGame
             if (!startPressed && Application.isPlaying && GUILayout.Button("Debug Start"))
             {
                 startPressed = true;
-                controller.DebugStartStage();
+                controller.InitializeScene().ContinueWith(() => controller.StartScene()).Forget();
             }
         }
     }

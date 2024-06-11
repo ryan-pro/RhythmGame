@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Spawns and manages bar objects that move down the track.
+    /// </summary>
     public class TrackBarView : MonoBehaviour
     {
         [Header("External References")]
@@ -19,20 +22,6 @@ namespace RhythmGame
 
         private CancellationTokenSource tokenSource;
 
-        [Header("Debug")]
-        [SerializeField]
-        private bool debugMode;
-        [SerializeField]
-        private int debugBeatsPerBar = 4;
-        [SerializeField]
-        private int debugBeatsBeforeSpawn = 3;
-
-        private void Awake()
-        {
-            if (debugMode)
-                Initialize(debugBeatsPerBar, debugBeatsBeforeSpawn);
-        }
-
         public void Initialize(int beatsPerBar, int beatsBeforeSpawn)
         {
             tokenSource?.Cancel();
@@ -44,18 +33,21 @@ namespace RhythmGame
         private async UniTaskVoid InitializeInternal(int beatsPerBar, int beatsBeforeSpawn, CancellationToken token)
         {
             await barPrefabPool.PopulatePool(token);
-
-            await UniTask.WaitUntil(() => conductor.IsStarted, cancellationToken: token);
+            //await UniTask.WaitUntil(() => conductor.IsStarted, cancellationToken: token);
 
             int lastBeat = -1;
 
-            await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, c => c.StageBeatPosition).WithCancellation(token))
+            //Acts as an update loop, filtered by changes in the stage's beat position
+            await foreach (float beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, c => c.StageBeatPosition).WithCancellation(token))
             {
+                //Only spawn a bar object when the beat position is a new whole number
                 var intPos = (int)beatPos;
+
                 if (intPos > lastBeat)
                 {
                     lastBeat = intPos;
 
+                    //If a bar is coming up, spawn it
                     if ((intPos + beatsBeforeSpawn) % beatsPerBar == 0)
                         barTrack.AddNote(lastBeat, lastBeat + beatsBeforeSpawn, token);
                 }

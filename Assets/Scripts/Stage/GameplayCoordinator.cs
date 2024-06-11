@@ -1,16 +1,19 @@
 ﻿using Cysharp.Threading.Tasks;
-using RhythmGame.Songs;
+using RhythmGame.SongModels;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Provides an interface for interacting with the gameplay components of the stage.
+    /// </summary>
     public class GameplayCoordinator : MonoBehaviour
     {
         [Header("External References")]
         [SerializeField]
-        private AssetReferenceScene resultsSceneRef;
+        private AssetReferenceScene resultsSceneRef;    //TODO: Move to StageController; out of scope for this class
 
         [Header("Scene References")]
         [SerializeField]
@@ -33,6 +36,9 @@ namespace RhythmGame
 
         private CancellationToken stageToken;
 
+        /// <summary>
+        /// Loads song and note data, and passes relevent data to components.
+        /// </summary>
         public UniTask InitializeGameplayComponents(SongData data, SongOptions options, CancellationToken token)
         {
             stageToken = token;
@@ -49,6 +55,9 @@ namespace RhythmGame
             return UniTask.WhenAll(songLoad, notesLoad);
         }
 
+        /// <summary>
+        /// Schedules the song to play and waits for it to finish.
+        /// </summary>
         public async UniTask PlaySong()
         {
             if (!conductor.IsStarted)
@@ -57,14 +66,22 @@ namespace RhythmGame
                 return;
             }
 
-            var startTime = conductor.ScheduleNewSongStart();
+            var startTime = conductor.SetSongStartTime();
             songPlayer.ScheduleSong(startTime);
-            await trackPlayer.PlayScheduledSong();
+            await trackPlayer.PlayNotes();
+
+            if (stageToken.IsCancellationRequested)
+                await UniTask.FromCanceled(stageToken);
 
             var (lastNoteBeat, songEndBeat) = trackPlayer.GetEndTimeInBeats();
             await EndSong(lastNoteBeat, songEndBeat);
         }
 
+        /// <summary>
+        /// If indicated by the song data, fades out the song before stopping it.
+        /// </summary>
+        /// <param name="lastNoteBeat">The beat position of the song's last note.</param>
+        /// <param name="endTimeInBeats">The calculated beat position to stop the song.</param>
         private async UniTask EndSong(float lastNoteBeat, float endTimeInBeats)
         {
             if (Mathf.Approximately(endTimeInBeats, -1f))
@@ -90,6 +107,9 @@ namespace RhythmGame
             songPlayer.StopSong();
         }
 
+        /// <summary>
+        /// Displays the results of the gameplay session and cleans up when it's closed.
+        /// </summary>
         public async UniTask ShowResults()
         {
             trackPlayer.SetInputEnabled(false);
@@ -104,6 +124,10 @@ namespace RhythmGame
             resultsSceneRef.UnloadSceneAsync().Forget();
         }
 
+        /// <summary>
+        /// Triggers the pause state of the gameplay components.
+        /// No effect if already paused.
+        /// </summary>
         public void StartPause()
         {
             if (!conductor.StartPause())
@@ -113,6 +137,10 @@ namespace RhythmGame
             trackPlayer.StartPause();
         }
 
+        /// <summary>
+        /// Resumes the gameplay components from the pause state.
+        /// No effect if not paused.
+        /// </summary>
         public void EndPause()
         {
             if (!conductor.EndPause())
@@ -122,6 +150,9 @@ namespace RhythmGame
             trackPlayer.EndPause();
         }
 
+        /// <summary>
+        /// Stops the conductor and unloads the song and note data.
+        /// </summary>
         public void EndGameplay()
         {
             conductor.StopConducting();

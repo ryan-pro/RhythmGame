@@ -35,32 +35,42 @@ namespace RhythmGame
         {
             foreach (var input in inputs)
             {
-                //if(!string.IsNullOrEmpty(input.InputName))
-                //{
-                //    if (Input.GetButtonDown(input.InputName))
-                //    {
-                //        input.Track.HandleTouchStart();
-                //    }
-                //    else if (Input.GetButton(input.InputName))
-                //    {
-                //        input.Track.HandleTouchHold();
-                //    }
-                //    else if (Input.GetButtonUp(input.InputName))
-                //    {
-                //        input.Track.HandleTouchEnd();
-                //    }
-                //}
-                /*else*/ if (input.KeyCode != KeyCode.None)
+                if (!string.IsNullOrEmpty(input.InputName))
+                {
+                    if (Input.GetButtonDown(input.InputName))
+                    {
+                        input.Track.HandleTouchStart();
+                        continue;
+                    }
+
+                    if (Input.GetButton(input.InputName))
+                    {
+                        input.Track.HandleTouchHold();
+                        continue;
+                    }
+
+                    if (Input.GetButtonUp(input.InputName))
+                    {
+                        input.Track.HandleTouchEnd();
+                        continue;
+                    }
+                }
+
+                if (input.KeyCode != KeyCode.None)
                 {
                     if (Input.GetKeyDown(input.KeyCode))
                     {
                         input.Track.HandleTouchStart();
+                        continue;
                     }
-                    else if (Input.GetKey(input.KeyCode))
+
+                    if (Input.GetKey(input.KeyCode))
                     {
                         input.Track.HandleTouchHold();
+                        continue;
                     }
-                    else if (Input.GetKeyUp(input.KeyCode))
+
+                    if (Input.GetKeyUp(input.KeyCode))
                     {
                         input.Track.HandleTouchEnd();
                     }

@@ -6,18 +6,9 @@ using UnityEngine;
 
 namespace RhythmGame
 {
-    public class TimedInputData
-    {
-        public readonly int InputIndex;
-        public float Time;
-
-        public TimedInputData(int inputIndex, float time)
-        {
-            InputIndex = inputIndex;
-            Time = time;
-        }
-    }
-
+    /// <summary>
+    /// Manages the spawning and tracking of notes on the tracks.
+    /// </summary>
     public class Track : MonoBehaviour
     {
         [Header("Scene References")]
@@ -43,6 +34,7 @@ namespace RhythmGame
         private readonly Queue<UniTask<NoteObject>> loadQueue = new();
         private readonly List<NoteObject> noteQueue = new();
 
+        //Maps input index/touch ID to the time it was last pressed
         private readonly Dictionary<int, float> inputTimers = new(5);
         private readonly int[] expiredIDs = new int[5];
 
@@ -60,6 +52,7 @@ namespace RhythmGame
         {
             ProcessLoadQueue();
 
+            //Handle input
             inputTimers.Keys.CopyTo(expiredIDs, 0);
             var inputCount = inputTimers.Count;
 
@@ -72,6 +65,7 @@ namespace RhythmGame
                     HandleTouchEnd(inputKey);
             }
 
+            //Handle missed notes
             var curBeat = conductor.SongBeatPosition;
             while (noteQueue.Count > 0)
             {
@@ -183,6 +177,11 @@ namespace RhythmGame
             this.okayThreshold = okayThreshold;
         }
 
+        /// <summary>
+        /// Gets or creates a note object and adds it to a load queue.
+        /// </summary>
+        /// <param name="startPosition">Starting time in beats.</param>
+        /// <param name="endPosition">Target time in beats.</param>
         public void AddNote(float startPosition, float endPosition, CancellationToken token)
         {
             var loadTask = notePrefabPool.GetObject(transform, true, token).ContinueWith(obj =>
@@ -195,6 +194,10 @@ namespace RhythmGame
             loadQueue.Enqueue(loadTask);
         }
 
+        /// <summary>
+        /// Move notes from the load queue
+        /// to the notes queue once they are loaded.
+        /// </summary>
         private void ProcessLoadQueue()
         {
             while (loadQueue.Count > 0)

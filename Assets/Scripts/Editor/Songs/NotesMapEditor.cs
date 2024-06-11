@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace RhythmGame.Songs
+namespace RhythmGame.SongModels
 {
     [CustomEditor(typeof(NotesMap))]
     public class NotesMapEditor : Editor

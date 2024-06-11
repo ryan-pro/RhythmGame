@@ -22,7 +22,7 @@ namespace RhythmGame.UI
             conductor.StartConducting(cachedData.BPM, cachedData.BeatsPerBar, cachedData.StartOffset);
             var audioClip = await audioLoad;
 
-            var startTime = conductor.ScheduleNewSongStart();
+            var startTime = conductor.SetSongStartTime();
             AudioSystem.PlayScheduledMusic(audioClip, startTime);
 
             //await UniTask.WaitUntil(() => AudioSettings.dspTime >= startTime, cancellationToken: token);

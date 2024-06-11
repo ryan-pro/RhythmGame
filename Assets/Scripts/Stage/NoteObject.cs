@@ -5,10 +5,14 @@ using UnityEngine;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Represents an object (mainly a note)
+    /// that moves from one point to another on the track.
+    /// </summary>
     public class NoteObject : PooledObject
     {
         [SerializeField]
-        private bool moveToSongBeat = true;
+        private bool moveToSongBeat = true; //True for notes, false for other objects
         [SerializeField]
         private bool logHitsToConsole;
 
@@ -40,6 +44,10 @@ namespace RhythmGame
             MoveToTarget(conductor, movingSource.Token).Forget();
         }
 
+        /// <summary>
+        /// Sets the hit rating of the note
+        /// and returns it to the pool.
+        /// </summary>
         public void SetNoteHitRating(NoteHitRating rating)
         {
             //TODO: Flesh out this method
@@ -65,14 +73,10 @@ namespace RhythmGame
 
         private async UniTaskVoid MoveToTarget(RhythmConductor conductor, CancellationToken token)
         {
-            var valueChanged = (moveToSongBeat
-                ? UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.SongBeatPosition)
-                : UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => m.StageBeatPosition))
-                .WithCancellation(token);
-
             var cachedTransform = transform;
 
-            await foreach (var beatPos in valueChanged)
+            //Acts as an update loop, filtered by changes to either the song beat or stage beat
+            await foreach (var beatPos in UniTaskAsyncEnumerable.EveryValueChanged(conductor, m => moveToSongBeat ? m.SongBeatPosition : m.StageBeatPosition).WithCancellation(token))
             {
                 if (beatPos >= targetBeat + 1f)
                 {

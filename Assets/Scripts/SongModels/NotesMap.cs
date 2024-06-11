@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks.Linq;
 using System.Linq;
 using UnityEngine;
 
-namespace RhythmGame.Songs
+namespace RhythmGame.SongModels
 {
     [CreateAssetMenu(menuName = "Rhythm Game/Songs/Notes Map")]
     public class NotesMap : ScriptableObject

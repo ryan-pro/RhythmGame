@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using RhythmGame.Songs;
+using RhythmGame.SongModels;
 using RhythmGame.UI;
 using System.Threading;
 using UnityEngine;
@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// The entry point for the stage scene; handles the lifecycle of the stage.
+    /// </summary>
     public class StageController : BaseSceneController
     {
         [Header("External References")]
@@ -28,9 +31,6 @@ namespace RhythmGame
         public SongData DebugSong => !Application.isEditor ? null : debugSong;
         public SongOptions DebugOptions => !Application.isEditor ? null : debugOptions;
 
-        public void DebugStartStage()
-            => InitializeScene().ContinueWith(() => StartScene()).Forget();
-
         public override async UniTask InitializeScene()
         {
             await base.InitializeScene();
@@ -40,26 +40,15 @@ namespace RhythmGame
         public override UniTask StartScene()
         {
             //TODO: Stage presentation, effects, etc.
-            PlayStage().Forget();
 
+            //PlayStage() will run for the duration of the song, so fire and forget
+            PlayStage().Forget();
             return UniTask.CompletedTask;
         }
 
-        private async UniTask PlayStage()
-        {
-            await gameplayCoord.PlaySong();
-
-            //TODO: End-stage presentation, loading of results screen
-            Debug.Log("Stage ended!");
-            await EndStage();
-        }
-
-        private UniTask InitializeStage(SongData data, SongOptions options)
-        {
-            stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
-            return gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
-        }
-
+        /// <summary>
+        /// Ends the stage and transitions back to the menu.
+        /// </summary>
         public async UniTask EndStage()
         {
             //TODO: Stage ending presentation stuff
@@ -79,6 +68,21 @@ namespace RhythmGame
 
             //TODO: Replace with addressables method
             SceneManager.UnloadSceneAsync(gameObject.scene).ToUniTask().Forget();
+        }
+
+        private UniTask InitializeStage(SongData data, SongOptions options)
+        {
+            stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            return gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
+        }
+
+        private async UniTaskVoid PlayStage()
+        {
+            await gameplayCoord.PlaySong();
+
+            //TODO: End-stage presentation, loading of results screen
+
+            await EndStage();
         }
 
         private void CleanUp()

@@ -6,6 +6,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Manages the playback and lifecycle of a song's audio clip.
+    /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class SongPlayer : MonoBehaviour
     {
@@ -24,6 +27,9 @@ namespace RhythmGame
 
         private void Reset() => songSource = GetComponent<AudioSource>();
 
+        /// <summary>
+        /// Loads the audio clip for the song data provided.
+        /// </summary>
         public async UniTask LoadClip(SongData songData, CancellationToken token)
         {
             if(loadedClip.IsValid())
@@ -33,6 +39,9 @@ namespace RhythmGame
             songSource.clip = await loadedClip.WithCancellation(token);
         }
 
+        /// <summary>
+        /// Removes audio clip and releases it from memory.
+        /// </summary>
         public void UnloadClip()
         {
             songSource.clip = null;
@@ -41,10 +50,14 @@ namespace RhythmGame
                 Addressables.Release(loadedClip);
         }
 
+        /// <summary>
+        /// Schedules loaded song to start at a specific time in the future.
+        /// </summary>
+        /// <param name="dspTime"></param>
         public void ScheduleSong(float dspTime)
         {
             songSource.PlayScheduled(dspTime);
-            Debug.Log($"Scheduled song start in {AudioSettings.dspTime - dspTime:N2} seconds!");
+            Debug.Log($"Scheduled song start in {dspTime - AudioSettings.dspTime:N2} seconds!");
         }
 
         public void StopSong()

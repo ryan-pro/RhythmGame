@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace RhythmGame.Songs
+namespace RhythmGame.SongModels
 {
     [CustomPropertyDrawer(typeof(NoteData))]
     public class NotePropertyDrawer : PropertyDrawer
