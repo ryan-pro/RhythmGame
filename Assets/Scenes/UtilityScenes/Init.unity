@@ -371,12 +371,17 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 1
+  - sceneReference:
+      m_AssetGUID: 842ac14df2dbaba4289effded6a4d95d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   postInitializationScene:
     sceneReference:
       m_AssetGUID: 091f8e7f255091c47b3c2dfb73be0017
       m_SubObjectName: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
   splashPlayer: {fileID: 1781007212}
 --- !u!4 &1781007211
 Transform:

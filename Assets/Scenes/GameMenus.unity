@@ -1281,7 +1281,7 @@ MonoBehaviour:
     Value: {fileID: 1457806028}
   - Key: Main
     Value: {fileID: 1544933759}
-  startingMenuKey: Title
+  StartingMenuKey: Title
 --- !u!1 &1047479028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,6 +1857,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5606d16d0ea0404488f521cc4b02f644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ingameScene:
+    sceneReference:
+      m_AssetGUID: 623c044caf9580648a88fc03194322cb
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
   menuCanvasGroup: {fileID: 701865271}
   fadeDuration: 0.8
   fadeEase: 4

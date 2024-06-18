@@ -115,13 +115,13 @@ namespace RhythmGame
             trackPlayer.SetInputEnabled(false);
 
             var hitResults = trackPlayer.GetNoteHitCounts();
-            var sceneInstance = await resultsSceneRef.LoadSceneAsync(LoadSceneMode.Additive, true, stageToken);
-
+            var sceneInstance = await SceneLoader.LoadSceneAsync(resultsSceneRef, token: stageToken);
             var resultsController = sceneInstance.Scene.FindInSceneRoot<ResultsController>();
-            resultsController.SetResults(hitResults.GreatCount, hitResults.OkayCount, hitResults.MissCount);
 
+            resultsController.SetResults(hitResults.GreatCount, hitResults.OkayCount, hitResults.MissCount);
             await resultsController.Display();
-            resultsSceneRef.UnloadSceneAsync().Forget();
+
+            SceneLoader.UnloadSceneAsync(resultsSceneRef, stageToken).Forget();
         }
 
         /// <summary>

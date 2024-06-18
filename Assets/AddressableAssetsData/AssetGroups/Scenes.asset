@@ -24,7 +24,7 @@ MonoBehaviour:
     - scene
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 623c044caf9580648a88fc03194322cb
-    m_Address: Ingame
+    m_Address: SongStage_Chun
     m_ReadOnly: 0
     m_SerializedLabels:
     - scene

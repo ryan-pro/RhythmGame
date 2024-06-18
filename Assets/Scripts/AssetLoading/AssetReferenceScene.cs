@@ -18,6 +18,7 @@ namespace RhythmGame
 
         private AsyncOperationHandle<SceneInstance> sceneOperation;
 
+        public AssetReference InternalReference => sceneReference;
         public Scene Scene => sceneOperation.Result.Scene;
         public bool IsValidAsset => sceneReference.RuntimeKeyIsValid();
         public bool IsLoaded => sceneOperation.IsValid() && sceneOperation.IsDone;

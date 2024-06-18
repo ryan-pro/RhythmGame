@@ -3,13 +3,16 @@ using DG.Tweening;
 using RhythmGame.GeneralAudio;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 namespace RhythmGame.UI
 {
     public class MainMenu : BaseMenu
     {
+        [Header("External References")]
+        [SerializeField]
+        private AssetReferenceScene ingameScene;
+
+        [Header("Scene References")]
         [SerializeField]
         private CanvasGroup menuCanvasGroup;
 
@@ -39,23 +42,20 @@ namespace RhythmGame.UI
             //TODO: Move most logic to MenuManager
             UniTask.Void(async () =>
             {
-                //TODO: Remove scene-specific dependency
-                var sceneLoadTask = Addressables.LoadSceneAsync("Ingame", UnityEngine.SceneManagement.LoadSceneMode.Additive, false);
+                var sceneLoadTask = SceneLoader.LoadSceneAsync(ingameScene, false, lifetimeToken);
 
                 await UniTask.WhenAll(
                     AudioSystem.StopMusic(fadeDuration, lifetimeToken),
                     manager.CloseMenus(lifetimeToken));
 
                 var loadedScene = await sceneLoadTask;
-
-                //TODO: Replace with addressables alternative (need load handle)
                 await loadedScene.ActivateAsync().WithCancellation(lifetimeToken);
 
-                var stage = loadedScene.Scene.FindInSceneRoot<BaseSceneController>();
-                await stage.InitializeScene();
+                var stageController = loadedScene.FindController();
+                await stageController.InitializeScene();
 
-                SceneManager.UnloadSceneAsync(gameObject.scene).WithCancellation(lifetimeToken).Forget();
-                stage.StartScene().Forget();
+                SceneLoader.UnloadSceneAsync(gameObject.scene, lifetimeToken).Forget();
+                stageController.StartScene().Forget();
             });
         }
 

@@ -24,19 +24,19 @@ namespace RhythmGame.Initialization
         {
             //Splash
             var splashTask = splashPlayer.PlaySplashScreen();
+
             await Addressables.InitializeAsync();
 
             //Background scenes (Audio, input, data, etc.)
             await UniTask.WhenAll(backgroundScenes.Select(a => a.LoadSceneAsync(UnityEngine.SceneManagement.LoadSceneMode.Additive, token: token)));
 
             //Load next scene, but don't activate yet
-            var loadedScene = await postInitializationScene.LoadSceneAsync(UnityEngine.SceneManagement.LoadSceneMode.Additive, false, token: token);
+            var loadedScene = await SceneLoader.LoadSceneAsync(postInitializationScene, false, token);
             await splashTask;
 
             await loadedScene.ActivateAsync().WithCancellation(token);
-            var controller = loadedScene.Scene.FindInSceneRoot<BaseSceneController>();
 
-            if (controller == null)
+            if (!loadedScene.TryFindController(out var controller))
             {
                 Debug.LogError("No controller found in post-initialization scene");
                 return;
@@ -44,6 +44,8 @@ namespace RhythmGame.Initialization
 
             await controller.InitializeScene();
             controller.StartScene().Forget();
+
+            //Not using SceneLoader because this script is housed in the only built-in scene
             SceneManager.UnloadSceneAsync(gameObject.scene).ToUniTask().Forget();
         }
     }

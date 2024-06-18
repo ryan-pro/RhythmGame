@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - scene
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 842ac14df2dbaba4289effded6a4d95d
+    m_Address: SceneLoader
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - scene
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}
   m_SchemaSet:
