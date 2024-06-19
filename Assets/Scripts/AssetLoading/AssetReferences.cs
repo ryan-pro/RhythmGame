@@ -5,6 +5,19 @@ using UnityEngine.AddressableAssets;
 namespace RhythmGame
 {
     /// <summary>
+    /// ScriptableObject only asset reference.
+    /// </summary>
+    [System.Serializable]
+    public class AssetReferenceScriptableObject : AssetReferenceT<ScriptableObject>
+    {
+        /// <summary>
+        /// Constructs a new reference to a ScriptableObject.
+        /// </summary>
+        /// <param name="guid">The object guid.</param>
+        public AssetReferenceScriptableObject(string guid) : base(guid) { }
+    }
+
+    /// <summary>
     /// SongData only asset reference.
     /// </summary>
     [System.Serializable]
@@ -67,5 +80,18 @@ namespace RhythmGame
         /// </summary>
         /// <param name="guid">The object guid.</param>
         public AssetReferencePooledObject(string guid) : base(guid) { }
+    }
+
+    /// <summary>
+    /// LoadableAudioList only asset reference.
+    /// </summary>
+    [System.Serializable]
+    public class AssetReferenceLoadableAudioList : AssetReferenceT<LoadableAudioList>
+    {
+        /// <summary>
+        /// Constructs a new reference to a LoadableAudioList.
+        /// </summary>
+        /// <param name="guid">The object guid.</param>
+        public AssetReferenceLoadableAudioList(string guid) : base(guid) { }
     }
 }

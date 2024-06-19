@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 25860767}
   - component: {fileID: 25860770}
   - component: {fileID: 25860769}
+  - component: {fileID: 25860771}
   - component: {fileID: 25860768}
   m_Layer: 3
   m_Name: Track2
@@ -251,14 +252,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 25860766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 25860771}
   start: {fileID: 1709428420}
   end: {fileID: 1107257306}
-  trackLight: {fileID: 25860770}
+  InputEnabled: 1
 --- !u!212 &25860770
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -311,6 +313,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &25860771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25860766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 93a797b3555ecb742b19d02c8f77e91f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 25860770}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &52430949
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,6 +346,7 @@ GameObject:
   - component: {fileID: 52430950}
   - component: {fileID: 52430953}
   - component: {fileID: 52430952}
+  - component: {fileID: 52430954}
   - component: {fileID: 52430951}
   m_Layer: 3
   m_Name: Track4
@@ -377,14 +402,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 52430949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 52430954}
   start: {fileID: 247558129}
   end: {fileID: 832255171}
-  trackLight: {fileID: 52430953}
+  InputEnabled: 1
 --- !u!212 &52430953
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -437,6 +463,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &52430954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52430949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 93a797b3555ecb742b19d02c8f77e91f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 52430953}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &65731933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1368,7 @@ GameObject:
   - component: {fileID: 777434776}
   - component: {fileID: 777434779}
   - component: {fileID: 777434778}
+  - component: {fileID: 777434780}
   - component: {fileID: 777434777}
   m_Layer: 3
   m_Name: Track0
@@ -1375,14 +1424,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 777434775}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 777434780}
   start: {fileID: 1116664455}
   end: {fileID: 209282754}
-  trackLight: {fileID: 777434779}
+  InputEnabled: 1
 --- !u!212 &777434779
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1435,6 +1485,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &777434780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777434775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 93a797b3555ecb742b19d02c8f77e91f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 777434779}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &804350252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,6 +2018,7 @@ GameObject:
   - component: {fileID: 1117732048}
   - component: {fileID: 1117732051}
   - component: {fileID: 1117732050}
+  - component: {fileID: 1117732052}
   - component: {fileID: 1117732049}
   m_Layer: 3
   m_Name: Track3
@@ -2001,14 +2074,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1117732047}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 1117732052}
   start: {fileID: 1193571637}
   end: {fileID: 804350253}
-  trackLight: {fileID: 1117732051}
+  InputEnabled: 1
 --- !u!212 &1117732051
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2061,6 +2135,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1117732052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117732047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 93a797b3555ecb742b19d02c8f77e91f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 1117732051}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &1177306024
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,7 +2502,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791935029}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b3f6d619333624f97b940bf086e1bc, type: 3}
+  m_Script: {fileID: 11500000, guid: d60e518635db8c94db94b6786e0ff1ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
@@ -2559,6 +2655,7 @@ GameObject:
   - component: {fileID: 1817711794}
   - component: {fileID: 1817711796}
   - component: {fileID: 1817711795}
+  - component: {fileID: 1817711797}
   m_Layer: 0
   m_Name: BarTrack
   m_TagString: Untagged
@@ -2592,14 +2689,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1817711793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 2063483886}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 1817711797}
   start: {fileID: 1484436168}
   end: {fileID: 417656890}
-  trackLight: {fileID: 1817711796}
+  InputEnabled: 0
 --- !u!212 &1817711796
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2652,6 +2750,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1817711797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817711793}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 1817711796}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &1910922384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,15 +2976,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2063483884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aec1b69a037be7b4c9f06f8a45c611cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fd904d46b9739c41b05f446c39f1625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   barPrefabPool: {fileID: 2063483886}
   barTrack: {fileID: 1817711795}
   conductor: {fileID: 1980449468}
-  debugMode: 0
-  debugBeatsPerBar: 4
-  debugBeatsBeforeSpawn: 16
 --- !u!1 &2066601727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2913,6 +3030,7 @@ GameObject:
   - component: {fileID: 2078121241}
   - component: {fileID: 2078121244}
   - component: {fileID: 2078121243}
+  - component: {fileID: 2078121245}
   - component: {fileID: 2078121242}
   m_Layer: 3
   m_Name: Track1
@@ -2968,14 +3086,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2078121240}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 852976069836b274e8d469fd33878414, type: 3}
+  m_Script: {fileID: 11500000, guid: 755a86e5ccb481243bb84978cd719abe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   notePrefabPool: {fileID: 1791935032}
   conductor: {fileID: 1980449468}
+  presenter: {fileID: 2078121245}
   start: {fileID: 3395084}
   end: {fileID: 986232613}
-  trackLight: {fileID: 2078121244}
+  InputEnabled: 1
 --- !u!212 &2078121244
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3028,6 +3147,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2078121245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078121240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45b6b92bbb4a07243a1a445e2506cf0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioListRef:
+    m_AssetGUID: 93a797b3555ecb742b19d02c8f77e91f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  trackLight: {fileID: 2078121244}
+  hitLightTimer: 0.15
+  greatSoundKey: GreatHit
+  okaySoundKey: OkayHit
+  missSoundKey: MissHit
 --- !u!1 &2083648112
 GameObject:
   m_ObjectHideFlags: 0

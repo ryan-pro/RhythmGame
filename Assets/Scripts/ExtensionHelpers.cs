@@ -25,6 +25,12 @@ namespace RhythmGame
             return result;
         }
 
+        public static bool FindInSceneRoot<T>(this Scene scene, out T result) where T : Component
+        {
+            result = scene.FindInSceneRoot<T>();
+            return result != null;
+        }
+
         public static BaseSceneController FindController(this SceneInstance sceneInstance)
             => sceneInstance.Scene.FindInSceneRoot<BaseSceneController>();
 

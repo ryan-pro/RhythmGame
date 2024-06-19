@@ -9,6 +9,7 @@ namespace RhythmGame
     /// <summary>
     /// Manages the spawning and tracking of notes on the tracks.
     /// </summary>
+    [RequireComponent(typeof(TrackPresenter))]
     public class Track : MonoBehaviour
     {
         [Header("Scene References")]
@@ -16,14 +17,14 @@ namespace RhythmGame
         private UnityObjectPoolBase notePrefabPool;
         [SerializeField]
         private RhythmConductor conductor;
+        [SerializeField]
+        private TrackPresenter presenter;
 
-        [Header("Local References")]
+        [Header("Internal References")]
         [SerializeField]
         private Transform start;
         [SerializeField]
         private Transform end;
-        [SerializeField]
-        private SpriteRenderer trackLight;
 
         [Header("Configuration")]
         public bool InputEnabled = true;
@@ -47,6 +48,8 @@ namespace RhythmGame
 
         public Transform Start => start;
         public Transform End => end;
+
+        private void Reset() => presenter = GetComponent<TrackPresenter>();
 
         private void Update()
         {
@@ -87,8 +90,7 @@ namespace RhythmGame
             var curBeat = conductor.SongBeatPosition;
             inputTimers[inputIndex] = Time.time;
 
-            trackLight.color = Color.white;
-            trackLight.enabled = true;
+            presenter.SetLightEnabled(true);
 
             var closestNote = noteQueue.OrderBy(note => Mathf.Abs(note.TargetBeat - curBeat)).FirstOrDefault();
 
@@ -101,24 +103,16 @@ namespace RhythmGame
             if (distance > conductor.SecondsPerBeat)
                 return;
 
+            var hitRating = NoteHitRating.Miss;
+
             if (distance <= greatThreshold)
-            {
-                trackLight.color = Color.green;
-                closestNote.SetNoteHitRating(NoteHitRating.Great);
-                NoteHits[NoteHitRating.Great]++;
-            }
+                hitRating = NoteHitRating.Great;
             else if (distance <= okayThreshold)
-            {
-                trackLight.color = Color.yellow;
-                closestNote.SetNoteHitRating(NoteHitRating.Okay);
-                NoteHits[NoteHitRating.Okay]++;
-            }
-            else
-            {
-                trackLight.color = Color.red;
-                closestNote.SetNoteHitRating(NoteHitRating.Miss);
-                NoteHits[NoteHitRating.Miss]++;
-            }
+                hitRating = NoteHitRating.Okay;
+
+            NoteHits[hitRating]++;
+            closestNote.SetNoteHitRating(hitRating);
+            presenter.HandleHit(closestNote, hitRating);
 
             //Discard other notes as missed
             while (noteQueue.Count > 0)
@@ -157,18 +151,9 @@ namespace RhythmGame
             if (inputTimers.Count > 0)
                 return;
 
-            trackLight.enabled = false;
+            presenter.SetLightEnabled(false);
 
             //TODO: Implement hold notes
-        }
-
-        private void SetLightColor(Color lightColor)
-        {
-            void ResetLightColor() => trackLight.color = Color.white;
-
-            trackLight.color = lightColor;
-            CancelInvoke(nameof(ResetLightColor));
-            Invoke(nameof(ResetLightColor), 0.1f);
         }
 
         public void SetScoreThresholds(float greatThreshold, float okayThreshold)

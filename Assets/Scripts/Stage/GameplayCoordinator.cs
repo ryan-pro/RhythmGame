@@ -116,7 +116,18 @@ namespace RhythmGame
 
             var hitResults = trackPlayer.GetNoteHitCounts();
             var sceneInstance = await SceneLoader.LoadSceneAsync(resultsSceneRef, token: stageToken);
-            var resultsController = sceneInstance.Scene.FindInSceneRoot<ResultsController>();
+
+            if (!sceneInstance.Scene.IsValid() && !Application.isEditor)
+            {
+                Debug.LogError("Results scene failed to load!");
+                return;
+            }
+
+            if (!sceneInstance.Scene.FindInSceneRoot<ResultsController>(out var resultsController) && !Application.isEditor)
+            {
+                Debug.LogError("Results scene should be loaded, but ResultsController not found!");
+                return;
+            }
 
             resultsController.SetResults(hitResults.GreatCount, hitResults.OkayCount, hitResults.MissCount);
             await resultsController.Display();

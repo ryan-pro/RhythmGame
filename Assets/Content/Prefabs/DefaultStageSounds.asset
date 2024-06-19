@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895357b19bcf138448df265c970c8aad, type: 3}
+  m_Name: DefaultStageSounds
+  m_EditorClassIdentifier: 
+  clipsList:
+  - Key: GreatHit
+    Value:
+      m_AssetGUID: d642312db895ebe41a9d914bdec9c09e
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - Key: OkayHit
+    Value:
+      m_AssetGUID: 4191311288ee0e844bec484708f12494
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - Key: MissHit
+    Value:
+      m_AssetGUID: 1d65b50d3264fb74098d2177e6385c73
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using RhythmGame.GeneralAudio;
 using RhythmGame.SongModels;
 using RhythmGame.UI;
 using System.Threading;
@@ -30,10 +31,16 @@ namespace RhythmGame
         public SongData DebugSong => !Application.isEditor ? null : debugSong;
         public SongOptions DebugOptions => !Application.isEditor ? null : debugOptions;
 
-        public override async UniTask InitializeScene()
+        public override UniTask InitializeScene()
         {
-            await base.InitializeScene();
-            await InitializeStage(debugSong, debugOptions);
+            var lifetimeToken = this.GetCancellationTokenOnDestroy();
+
+            var baseInit = base.InitializeScene();
+            var sceneInit = SceneLoader.GetInstance(lifetimeToken);
+            var audioInit = AudioSystem.Initialize(lifetimeToken);
+            var stageInit = InitializeStage(debugSong, debugOptions, lifetimeToken);
+
+            return UniTask.WhenAll(baseInit, sceneInit, audioInit, stageInit);
         }
 
         public override UniTask StartScene()
@@ -64,9 +71,9 @@ namespace RhythmGame
             SceneLoader.UnloadSceneAsync(gameObject.scene).Forget();
         }
 
-        private UniTask InitializeStage(SongData data, SongOptions options)
+        private UniTask InitializeStage(SongData data, SongOptions options, CancellationToken token)
         {
-            stageSource = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+            stageSource = CancellationTokenSource.CreateLinkedTokenSource(token);
             return gameplayCoord.InitializeGameplayComponents(data, options, stageSource.Token);
         }
 
