@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RhythmGame
 {
-    public abstract class AddressableObjectPool : UnityObjectPoolBase
+    public sealed class AddressableObjectPool : UnityObjectPoolBase
     {
         [Header("Pool Settings")]
         [SerializeField]
@@ -16,8 +16,20 @@ namespace RhythmGame
         private readonly Queue<PooledObject> availableObjects = new();
         private readonly HashSet<PooledObject> allObjects = new();
 
-        private async UniTask LoadPrefab(CancellationToken token)
-            => loadedAsset = await prefabRef.LoadAssetAsync().WithCancellation(token);
+        private AsyncLazy prefabLoadLazy;
+
+        private UniTask LoadPrefab(CancellationToken token)
+        {
+            prefabLoadLazy ??= new AsyncLazy(async () =>
+            {
+                var go = await prefabRef.LoadAssetAsync().WithCancellation(token);
+
+                if (!go.TryGetComponent(out loadedAsset))
+                    Debug.LogError($"Prefab {go.name} does not have a {nameof(PooledObject)} component attached to it.", go);
+            });
+
+            return prefabLoadLazy.Task;
+        }
 
         public override async UniTask PopulatePool(int minimumCount, CancellationToken token)
         {
