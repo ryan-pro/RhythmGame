@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beea45e574855a44abafa374abe7f98f, type: 3}
   m_Name: Hello World
   m_EditorClassIdentifier: 
+  isPlayable: 1
   songName: Hello World!!
   artist: Spiky Candy
   audioClip:

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beea45e574855a44abafa374abe7f98f, type: 3}
   m_Name: Starry night
   m_EditorClassIdentifier: 
+  isPlayable: 1
   songName: Starry night
   artist: rk
   audioClip:
@@ -26,6 +27,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 0
   bpm: 0
+  beatsPerBar: 0
   startOffset: 0
   easyNoteTrack:
     m_AssetGUID: c2399c7275f36c44fa79835003b4b3e8

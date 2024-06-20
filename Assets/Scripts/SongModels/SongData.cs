@@ -12,6 +12,8 @@ namespace RhythmGame
     public class SongData : ScriptableObject
     {
         [SerializeField]
+        private bool isPlayable;
+        [SerializeField]
         private string songName;
         [SerializeField]
         private string artist;
@@ -34,6 +36,8 @@ namespace RhythmGame
         private AssetReferenceNotesMap mediumNoteTrack;
         [SerializeField]
         private AssetReferenceNotesMap hardNoteTrack;
+
+        public bool IsPlayable => isPlayable;
 
         public string SongName => songName;
         public string Artist => artist;
