@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895357b19bcf138448df265c970c8aad, type: 3}
   m_Name: DefaultStageSounds
   m_EditorClassIdentifier: 
-  clipsList:
+  referenceList:
   - Key: GreatHit
     Value:
       m_AssetGUID: d642312db895ebe41a9d914bdec9c09e

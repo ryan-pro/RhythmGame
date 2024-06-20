@@ -25,13 +25,16 @@ namespace RhythmGame
         [SerializeField]
         private string missSoundKey = "MissHit";
 
+        private LoadableAudioList audioList;
+
         private UniTask<LoadableAudioList> loadTask;
         private CancellationTokenSource loadTokenSource;
-        private LoadableAudioList audioList;
+
+        CancellationToken lifetimeToken;
 
         private void OnEnable()
         {
-            var lifetimeToken = this.GetCancellationTokenOnDestroy();
+            lifetimeToken = this.GetCancellationTokenOnDestroy();
             loadTokenSource = CancellationTokenSource.CreateLinkedTokenSource(lifetimeToken);
 
             LoadAudioList(loadTokenSource.Token).Forget();
@@ -41,7 +44,7 @@ namespace RhythmGame
         {
             loadTokenSource?.Cancel();
 
-            audioList.UnloadClips();
+            audioList.UnloadAllClips();
             audioList = null;
 
             audioListRef.ReleaseAsset();
@@ -53,7 +56,7 @@ namespace RhythmGame
         {
             loadTask = audioListRef.LoadAssetAsync().WithCancellation(token).Preserve();
             audioList = await loadTask;
-            audioList.LoadClips().Forget();
+            await audioList.PreloadAllClips(token);
         }
 
         public void HandleHit(NoteObject note, NoteHitRating rating)
@@ -86,7 +89,7 @@ namespace RhythmGame
 
         private void ResetLightColor() => trackLight.color = Color.white;
 
-        private void TriggerHitSound(string clipKey)
+        private async UniTaskVoid TriggerHitSound(string clipKey)
         {
             if (audioList == null)
             {
@@ -94,13 +97,9 @@ namespace RhythmGame
                 return;
             }
 
-            if (audioList.LoadedClipsMap.Count == 0)
-            {
-                Debug.LogError("Audio list is empty.");
-                return;
-            }
+            var clip = await audioList.GetClip(clipKey, lifetimeToken);
 
-            if (!audioList.LoadedClipsMap.TryGetValue(clipKey, out var clip))
+            if (clip == null)
             {
                 Debug.LogError($"Clip key {clipKey} not found in audio list.");
                 return;

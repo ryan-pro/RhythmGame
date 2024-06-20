@@ -1,9 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RhythmGame
 {
@@ -11,46 +11,100 @@ namespace RhythmGame
     public class LoadableAudioList : ScriptableObject
     {
         [SerializeField]
-        private SerializedKeyValue<string, AssetReferenceAudioClip>[] clipsList = new SerializedKeyValue<string, AssetReferenceAudioClip>[0];
+        private SerializedKeyValue<string, AssetReferenceAudioClip>[] referenceList = new SerializedKeyValue<string, AssetReferenceAudioClip>[0];
 
-        [NonSerialized]
-        public Dictionary<string, AudioClip> LoadedClipsMap = new();
-        [NonSerialized]
-        public AudioClip[] LoadedClips = new AudioClip[0];
+        private Dictionary<string, AssetReferenceAudioClip> _clipsMap;
+        private Dictionary<string, AssetReferenceAudioClip> ClipsMap
+            => _clipsMap ??= referenceList.ToDictionary(a => a.Key, a => a.Value);
 
-        private UniTask<AudioClip[]> loadTask;
-        private CancellationTokenSource loadTokenSource;
-        public bool IsLoaded => loadTask.Status.IsCompletedSuccessfully();
+        private AssetReferenceAudioClip[] _clipsList;
+        private AssetReferenceAudioClip[] ClipsList
+            => referenceList.Select(a => a.Value).ToArray();
 
-        public async UniTask LoadClips()
+        private AsyncLazy preloadTask;
+
+        public UniTask<AudioClip> GetClip(string name, CancellationToken token)
         {
-            if (clipsList.Length == 0 || loadTokenSource != null)
-                return;
+            if (!ClipsMap.TryGetValue(name, out var clipRef))
+            {
+                Debug.LogError($"Clip with name {name} not found in list.");
+                return UniTask.FromResult<AudioClip>(null);
+            }
 
-            loadTokenSource = new CancellationTokenSource();
-            loadTask = UniTask.WhenAll(clipsList.Select(a => a.Value.LoadAssetAsync().WithCancellation(loadTokenSource.Token)));
-
-            LoadedClipsMap.EnsureCapacity(clipsList.Length);
-            Array.Resize(ref LoadedClips, clipsList.Length);
-
-            LoadedClips = await loadTask;
-
-            for (int i = 0; i < clipsList.Length; i++)
-                LoadedClipsMap[clipsList[i].Key] = LoadedClips[i];
+            return GetClipInternal(clipRef, token);
         }
 
-        public void UnloadClips()
+        public UniTask<AudioClip> GetClip(int index, CancellationToken token)
         {
-            loadTokenSource?.Cancel();
+            if (index < 0 || index >= ClipsList.Length)
+            {
+                Debug.LogError($"Provided index of {index} outside bounds of the list.");
+                return UniTask.FromResult<AudioClip>(null);
+            }
 
-            LoadedClipsMap.Clear();
-            Array.Clear(LoadedClips, 0, LoadedClips.Length);
+            return GetClipInternal(ClipsList[index], token);
+        }
 
-            foreach (var entry in clipsList)
+        private UniTask<AudioClip> GetClipInternal(AssetReferenceAudioClip clipRef, CancellationToken token)
+        {
+            if (clipRef.OperationHandle.IsValid())
+            {
+                if (clipRef.OperationHandle.IsDone)
+                    return UniTask.FromResult((AudioClip)clipRef.Asset);
+
+                return clipRef.OperationHandle.Convert<AudioClip>().WithCancellation(token);
+            }
+
+            return clipRef.LoadAssetAsync().WithCancellation(token);
+        }
+
+        public void UnloadClip(string name)
+        {
+            if (!ClipsMap.TryGetValue(name, out var clipRef))
+            {
+                Debug.LogError($"Clip with name {name} not found in list.");
+                return;
+            }
+
+            if (clipRef.OperationHandle.IsValid())
+                clipRef.ReleaseAsset();
+        }
+
+        public void UnloadClip(int index)
+        {
+            if (index < 0 || index >= ClipsList.Length)
+            {
+                Debug.LogError($"Provided index of {index} outside bounds of the list.");
+                return;
+            }
+
+            var clipRef = ClipsList[index];
+
+            if (clipRef.OperationHandle.IsValid())
+                clipRef.ReleaseAsset();
+        }
+
+        public UniTask PreloadAllClips(CancellationToken token)
+        {
+            if (referenceList.Length == 0)
+            {
+                Debug.Log(name + ": No AudioClips to load.");
+                return UniTask.CompletedTask;
+            }
+
+            preloadTask ??= new AsyncLazy(() => UniTask.WhenAll(referenceList.Select(a => a.Value.LoadAssetAsync().WithCancellation(token))));
+            return preloadTask.Task;
+        }
+
+        public void UnloadAllClips()
+        {
+            foreach (var entry in referenceList)
             {
                 if (entry.Value.OperationHandle.IsValid())
                     entry.Value.ReleaseAsset();
             }
         }
+
+        private void OnDestroy() => UnloadAllClips();
     }
 }
