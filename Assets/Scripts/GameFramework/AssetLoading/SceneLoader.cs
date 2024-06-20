@@ -10,6 +10,9 @@ using UnityEngine.SceneManagement;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Singleton class that handles loading and unloading of scenes using Addressables.
+    /// </summary>
     public class SceneLoader : MonoBehaviour
     {
         private const string sceneKey = "SceneLoader";
@@ -123,12 +126,22 @@ namespace RhythmGame
             return await newHandle.WithCancellation(token);
         }
 
+        /// <summary>
+        /// If a scene contains a controller inheriting from BaseSceneController,
+        /// this method will load the scene and then initialize the controller.
+        /// </summary>
+        /// <returns>The loaded scene's initialized controller.</returns>
         public static async UniTask<BaseSceneController> LoadInitControllerSceneAsync(string sceneName, CancellationToken token = default)
         {
             var sceneInstance = await LoadSceneAsync(sceneName, true, token);
             return await sceneInstance.InitializeController();
         }
 
+        /// <summary>
+        /// If a scene contains a controller inheriting from BaseSceneController,
+        /// this method will load the scene and then initialize the controller.
+        /// </summary>
+        /// <returns>The loaded scene's initialized controller.</returns>
         public static async UniTask<BaseSceneController> LoadInitControllerSceneAsync(AssetReferenceScene sceneRef, CancellationToken token = default)
         {
             var sceneInstance = await LoadSceneAsync(sceneRef, true, token);

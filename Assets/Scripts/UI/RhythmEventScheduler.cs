@@ -7,6 +7,9 @@ using UnityEngine.Events;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Schedules events to be executed at specific beats in the song.
+    /// </summary>
     public class RhythmEventScheduler : MonoBehaviour
     {
         [SerializeField]
@@ -47,9 +50,9 @@ namespace RhythmGame
             await foreach (float beat in UniTaskAsyncEnumerable.EveryValueChanged(conductor, c => c.SongBeatPosition))
             {
                 //If cancelled, invoke all remaining events and break
-                if(token.IsCancellationRequested)
+                if (token.IsCancellationRequested)
                 {
-                    while(eventQueue.TryDequeue(out var evt))
+                    while (eventQueue.TryDequeue(out var evt))
                         evt.OnBeat.Invoke(evt.DurationInBeats * conductor.SecondsPerBeat, token);
 
                     break;
@@ -76,6 +79,9 @@ namespace RhythmGame
         private void OnDestroy() => schedulerSource?.Dispose();
     }
 
+    /// <summary>
+    /// Represents an event that is synchronized to the beat of a song.
+    /// </summary>
     [System.Serializable]
     public class SynchronizedEvent
     {

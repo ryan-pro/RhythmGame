@@ -18,7 +18,7 @@ namespace RhythmGame
 
         [Header("Scene References")]
         [SerializeField]
-        private GameplayCoordinator gameplayCoord;
+        private GameplayOperator gameplayCoord;
 
         [Header("Debug")]
         [SerializeField]

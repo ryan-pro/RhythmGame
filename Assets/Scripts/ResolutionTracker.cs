@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace RhythmGame
 {
+    [System.Obsolete("This script is not used in the project, " +
+        "but it's a good example of how to use UniTaskAsyncEnumerable " +
+        "to track changes in the resolution of the screen and adjust the camera's FOV accordingly.")]
     [RequireComponent(typeof(Camera))]
     public class ResolutionTracker : MonoBehaviour
     {

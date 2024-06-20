@@ -9,7 +9,7 @@ namespace RhythmGame
     /// <summary>
     /// Provides an interface for interacting with the gameplay components of the stage.
     /// </summary>
-    public class GameplayCoordinator : MonoBehaviour
+    public class GameplayOperator : MonoBehaviour
     {
         [Header("External References")]
         [SerializeField]

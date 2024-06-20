@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Wrapper class for AssetReference to handle scene assets.
+    /// </summary>
     [System.Serializable]
     public class AssetReferenceScene
     {
@@ -39,6 +42,7 @@ namespace RhythmGame
             if (IsLoaded)
                 return sceneOperation.Result.ActivateAsync().WithCancellation(token);
 
+            Debug.LogError("Cannot activate scene because it's not loaded.");
             return UniTask.CompletedTask;
         }
 
@@ -60,7 +64,7 @@ namespace RhythmGame
 
         public bool CheckReferenceValueChanged()
         {
-            if(sceneReference.editorAsset == null || sceneReference.editorAsset == cachedRef)
+            if (sceneReference.editorAsset == null || sceneReference.editorAsset == cachedRef)
                 return false;
 
             cachedRef = sceneReference.editorAsset;

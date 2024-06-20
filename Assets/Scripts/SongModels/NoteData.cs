@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace RhythmGame.SongModels
 {
+    /// <summary>
+    /// Represents a note in a song.
+    /// </summary>
     [System.Serializable]
     public struct NoteData
     {

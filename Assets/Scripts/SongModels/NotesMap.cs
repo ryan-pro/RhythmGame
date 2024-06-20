@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace RhythmGame.SongModels
 {
+    /// <summary>
+    /// Scriptable object that contains the notes of a song.
+    /// </summary>
     [CreateAssetMenu(menuName = "Rhythm Game/Songs/Notes Map")]
     public class NotesMap : ScriptableObject
     {

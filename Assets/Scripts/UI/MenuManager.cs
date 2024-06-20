@@ -34,7 +34,7 @@ namespace RhythmGame.UI
             if (!AudioSystem.IsInitialized)
                 audioTask = AudioSystem.Initialize(this.GetCancellationTokenOnDestroy());
 
-            if(!FindObjectOfType<UnityEngine.EventSystems.EventSystem>())
+            if (!FindObjectOfType<UnityEngine.EventSystems.EventSystem>())
                 new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
 
             foreach (var item in menuItems)

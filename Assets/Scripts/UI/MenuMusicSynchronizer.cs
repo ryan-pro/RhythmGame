@@ -24,15 +24,13 @@ namespace RhythmGame.UI
 
             var startTime = conductor.SetSongStartTime();
             AudioSystem.PlayScheduledMusic(audioClip, startTime);
-
-            //await UniTask.WaitUntil(() => AudioSettings.dspTime >= startTime, cancellationToken: token);
         }
 
         private void OnDestroy() => ReleaseAssets();
 
         private void ReleaseAssets()
         {
-            if(cachedData == null)
+            if (cachedData == null)
                 return;
 
             cachedData.AudioClip.ReleaseAsset();

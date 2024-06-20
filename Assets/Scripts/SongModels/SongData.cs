@@ -5,6 +5,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace RhythmGame
 {
+    /// <summary>
+    /// Represents a song in the game, containing metadata and references to the audio and note tracks.
+    /// </summary>
     [CreateAssetMenu(menuName = "Rhythm Game/Songs/Song Data")]
     public class SongData : ScriptableObject
     {
