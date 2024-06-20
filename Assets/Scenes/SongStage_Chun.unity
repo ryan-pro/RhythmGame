@@ -2521,13 +2521,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791935029}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814d6010ff54f6146bcd96789e4c9dcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5742d6f4196527d45a7d354ea37cc8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   poolParent: {fileID: 1791935030}
   populateOnAwake: 1
   initialPoolSize: 30
-  objectPrefab: {fileID: 4126981645418996148, guid: 2c3f9bf341e3ebb4c8c9ef954d3cd87e, type: 3}
+  prefabRef:
+    m_AssetGUID: 2c3f9bf341e3ebb4c8c9ef954d3cd87e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!114 &1791935033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2960,13 +2964,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2063483884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 814d6010ff54f6146bcd96789e4c9dcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 5742d6f4196527d45a7d354ea37cc8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   poolParent: {fileID: 2063483885}
   populateOnAwake: 1
   initialPoolSize: 5
-  objectPrefab: {fileID: 678230459867845763, guid: 15f4e555449167a42974ff278af223c7, type: 3}
+  prefabRef:
+    m_AssetGUID: 15f4e555449167a42974ff278af223c7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!114 &2063483887
 MonoBehaviour:
   m_ObjectHideFlags: 0

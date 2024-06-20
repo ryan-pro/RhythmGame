@@ -16,32 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: a84ff6bc11cf34f40b79a0e688411d2c
-  m_SerializeEntries:
-  - m_GUID: d642312db895ebe41a9d914bdec9c09e
-    m_Address: Assets/Content/GeneralAudio/Sounds/impactGeneric_light_001.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a1b1a5ab131ced649b2dc72b6d0ce73a
-    m_Address: Assets/Content/GeneralAudio/Sounds/impactPlate_heavy_000.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4191311288ee0e844bec484708f12494
-    m_Address: Assets/Content/GeneralAudio/Sounds/impactWood_medium_002.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1d65b50d3264fb74098d2177e6385c73
-    m_Address: Assets/Content/GeneralAudio/Sounds/impactMining_004.ogg
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 93a797b3555ecb742b19d02c8f77e91f
-    m_Address: Assets/Content/Prefabs/DefaultStageSounds.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}
   m_SchemaSet:

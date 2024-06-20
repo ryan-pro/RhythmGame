@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Content
+  m_Name: MenuContent
   m_EditorClassIdentifier: 
-  m_GroupName: Content
+  m_GroupName: MenuContent
   m_Data:
     m_SerializedData: []
   m_GUID: 7a0c0042d726db8468742bfec25d4ada
@@ -20,12 +20,14 @@ MonoBehaviour:
   - m_GUID: ec46e7699d1fd8449bfb704133baefd2
     m_Address: A Good Boi - Dreams and Visions
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - audio
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 56b932dcdebb7b94d8d1e6dd3d15c39f
     m_Address: Dreams and Visions
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - data
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7849a8c4081ebad478ea5f8d4747cdfe, type: 2}

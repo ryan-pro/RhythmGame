@@ -73,13 +73,21 @@ namespace RhythmGame
     /// PooledObject only asset reference.
     /// </summary>
     [System.Serializable]
-    public class AssetReferencePooledObject : AssetReferenceT<PooledObject>
+    public class AssetReferencePooledObject : AssetReferenceGameObject
     {
         /// <summary>
         /// Constructs a new reference to a PooledObject.
         /// </summary>
         /// <param name="guid">The object guid.</param>
         public AssetReferencePooledObject(string guid) : base(guid) { }
+
+        public override bool ValidateAsset(Object obj)
+        {
+            if (obj is not GameObject go)
+                return false;
+
+            return go.TryGetComponent<PooledObject>(out _);
+        }
     }
 
     /// <summary>
